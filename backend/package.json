@@ -3,15 +3,27 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server.js",
+    "db:migrate": "npx sequelize-cli db:migrate --config src/config/config.json --migrations-path src/migrations",
+    "db:migrate:undo": "npx sequelize-cli db:migrate:undo --config src/config/config.json --migrations-path src/migrations",
+    "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all --config src/config/config.json --migrations-path src/migrations",
+    "migrate:create": "npx sequelize-cli migration:generate --config src/config/config.json --migrations-path src/migrations --name"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
     "node-postgres": "^0.6.2",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7"
   }
 }
