@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const { sequelize } = require("./models");
 
-const roleRoutes = require("./routes/role.route");
+const routes = require('./routes')
 
 const app = express();
 
@@ -19,7 +19,8 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 // Routes
-app.use("/api/roles", roleRoutes);
+app.use("/api", routes);
+
 
 sequelize
   .sync()
