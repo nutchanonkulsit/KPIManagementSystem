@@ -1,8 +1,7 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../config/db");
 const bcrypt = require("bcryptjs");
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   const User = sequelize.define(
     "User",
     {
@@ -28,42 +27,48 @@ module.exports = (sequelize, DataTypes) => {
       },
       role_id: {
         type: DataTypes.INTEGER,
-        references: {
-          model: "roles",
-          key: "id",
-        },
+        allowNull: true,
+        references: { model: "roles", key: "id" },
       },
       created_at: {
         type: DataTypes.DATE,
+        allowNull: false,
         defaultValue: DataTypes.NOW,
       },
       updated_at: {
         type: DataTypes.DATE,
+        allowNull: false,
         defaultValue: DataTypes.NOW,
       },
     },
     {
       tableName: "users",
-      timestamps: false, // since using created_at & updated_at manually
+      timestamps: false, // managing created_at / updated_at manually
     }
   );
 
-  // 🔒 hash password before creating
+  // Hash password before create
   User.beforeCreate(async (user) => {
-    if (user.password_hash) {
+    if (user.password) {
+      // accept "password" in API
       const salt = await bcrypt.genSalt(10);
-      user.password_hash = await bcrypt.hash(user.password_hash, salt);
+      user.password_hash = await bcrypt.hash(user.password, salt);
+      delete user.password; // remove plain password
     }
   });
 
-  User.associate = (models) => {
-    User.belongsTo(models.Role, { foreignKey: "role_id", as: "role" });
-    User.hasMany(models.KPI, {
-      foreignKey: "assigned_user",
-      as: "kpis",
-    });
-    User.hasMany(models.KPIUpdate, {foreignKey: "updated_by", as: "kpiUpdates"});
+  User.prototype.checkPassword = async function (password) {
+    return await bcrypt.compare(password, this.password_hash);
+  };
 
+  // Associations using snake_case
+  User.associate = (models) => {
+    User.belongsTo(models.Role, { foreignKey: "role_id", as: "role" }); // use role_id
+    User.hasMany(models.KPI, { foreignKey: "assigned_user", as: "kpis" });
+    User.hasMany(models.KPIUpdate, {
+      foreignKey: "updated_by",
+      as: "kpiUpdates",
+    });
   };
 
   return User;

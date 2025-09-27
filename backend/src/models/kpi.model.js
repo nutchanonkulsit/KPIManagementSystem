@@ -62,8 +62,9 @@ module.exports = (sequelize, DataTypes) => {
   KPI.associate = (models) => {
     KPI.belongsTo(models.User, {
       foreignKey: "assigned_user",
-      as: "assignedUser",
+      as: "assigned_user_info",
     });
+
     KPI.hasMany(models.KPIUpdate, { foreignKey: "kpi_id", as: "updates" });
   };
 
