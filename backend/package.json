@@ -8,7 +8,10 @@
     "db:migrate": "npx sequelize-cli db:migrate --config src/config/config.json --migrations-path src/migrations",
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo --config src/config/config.json --migrations-path src/migrations",
     "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all --config src/config/config.json --migrations-path src/migrations",
-    "migrate:create": "npx sequelize-cli migration:generate --config src/config/config.json --migrations-path src/migrations --name"
+    "migrate:create": "npx sequelize-cli migration:generate --config src/config/config.json --migrations-path src/migrations --name",
+    "seed": "npx sequelize-cli db:seed:all --config src/config/config.json --seeders-path src/seeders",
+    "seed:undo": "npx sequelize-cli db:seed:undo:all --config src/config/config.json --seeders-path src/seeders"
+
   },
   "author": "",
   "license": "ISC",
