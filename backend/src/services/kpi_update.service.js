@@ -29,16 +29,16 @@ class KPIUpdateService {
   async getAllKPIUpdateByKPIID(kpi_id) {
     const kpiUpdate = await KPIUpdate.findAll({
       where: { kpi_id: kpi_id },
-    //   include: [
-    //     {
-    //       model: KPI,
-    //       as: "kpi",
-    //     },
-    //     {
-    //       model: User,
-    //       as: "updatedBy",
-    //     },
-    //   ],
+      //   include: [
+      //     {
+      //       model: KPI,
+      //       as: "kpi",
+      //     },
+      //     {
+      //       model: User,
+      //       as: "updatedBy",
+      //     },
+      //   ],
     });
     return kpiUpdate;
   }
