@@ -8,6 +8,9 @@ import { ManageUserComponent } from './pages/admin/manage-user/manage-user.compo
 import { KpiComponent } from './pages/user/kpi/kpi.component';
 import { LayoutComponent } from './layouts/layout/layout.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +23,9 @@ import { LoginFormComponent } from './components/login-form/login-form.component
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
     provideClientHydration(withEventReplay())
