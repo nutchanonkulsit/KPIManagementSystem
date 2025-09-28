@@ -1,33 +1,31 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { CanActivate, Router, UrlTree } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router
+  ) {}
 
-  canActivate(): boolean {
+  canActivate(): boolean | UrlTree {
     let token: string | null = null;
     let role: string | null = null;
 
-    if (typeof localStorage !== 'undefined') {
+    if (isPlatformBrowser(this.platformId)) {
       token = localStorage.getItem('token');
       role = localStorage.getItem('role');
     }
 
-    if (token) {
-      // ✅ Already logged in → redirect by role
-      if (role === 'admin') {
-        this.router.navigate(['/admin/manage-kpi']);
-      } else if (role === 'user') {
-        this.router.navigate(['/user/kpi']);
-      } else {
-        this.router.navigate(['/unauthorized']);
-      }
-      return false; 
+    // If already logged in → redirect to role-based default page
+    if (token && role) {
+      if (role === 'admin') return this.router.parseUrl('/admin/manage-kpi');
+      if (role === 'user') return this.router.parseUrl('/user/kpi');
     }
 
-    return true;
+    return true; // allow access to /login
   }
 }
