@@ -88,14 +88,15 @@ export class LayoutComponent {
     const url = this.router.url;
 
     if (url.includes('/user/kpi')) {
-      this.pageTitle = 'KPI Dashboard';
+      this.pageTitle = 'Performance Dashboard';
       this.pageDescription = 'Track and manage your key performance indicators';
     } else if (url.includes('/kpis/create')) {
       this.pageTitle = 'Create New KPI';
       this.pageDescription = 'Define a new key performance indicator';
     } else if (url.includes('admin/manage-kpi')) {
-      this.pageTitle = 'Manage KPI';
-      this.pageDescription = '';
+      this.pageTitle = 'KPI Management';
+      this.pageDescription =
+        'Create, read, update, and delete Key Performance Indicators';
     } else if (url.includes('admin/manage-user')) {
       this.pageTitle = 'Manage User';
       this.pageDescription = '';

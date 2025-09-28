@@ -1,0 +1,452 @@
+<div>
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center"
+        >
+          <svg
+            class="w-6 h-6 text-black"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            ></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-white">Create New KPI</h2>
+          <p class="text-blue-100 text-sm">Define your performance indicator</p>
+        </div>
+      </div>
+      <button
+        class="text-white hover:bg-white hover:text-black hover:bg-opacity-20 rounded-full p-2 transition-all duration-200"
+        (click)="closeModal()"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <div class="p-8">
+    <form #kpiForm="ngForm" (ngSubmit)="createKPI(kpiForm)" class="space-y-6">
+      <!-- Row 1: Title and Description -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Title -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="title"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-blue-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.99 1.99 0 013 12V7a4 4 0 014-4z"
+                ></path>
+              </svg>
+              Title *
+            </span>
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              id="title"
+              name="title"
+              [(ngModel)]="kpi.title"
+              required
+              #titleField="ngModel"
+              placeholder="Enter KPI title"
+              class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
+            />
+            <span
+              class="error-message text-red-500 text-sm block"
+              *ngIf="titleField.invalid && titleField.touched"
+            >
+              Title is required
+            </span>
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="status"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-green-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              Status *
+            </span>
+          </label>
+          <div class="relative">
+            <select
+              id="status"
+              name="status"
+              required
+              [(ngModel)]="kpi.status"
+              #statusField="ngModel"
+              class="input-focus w-full pl-4 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+            >
+              <option value="null">Select Status</option>
+              <option value="On Track">🟢 On Track</option>
+              <option value="At Risk">🟡 At Risk</option>
+              <option value="Off Track">🔴 Off Track</option>
+            </select>
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+            >
+              <svg
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+            <span
+              class="error-message text-red-500 text-sm block"
+              *ngIf="
+                statusField.invalid &&
+                statusField.touched &&
+                kpi.status === null
+              "
+            >
+              Status is required
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label
+          class="block text-sm font-semibold text-gray-700 mb-2"
+          for="description"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 text-purple-500 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h7"
+              ></path>
+            </svg>
+            Description
+          </span>
+        </label>
+        <textarea
+          id="description"
+          name="description"
+          rows="3"
+          [(ngModel)]="kpi.description"
+          placeholder="Describe your KPI objectives and methodology..."
+          class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Row 2: Target and Actual Values -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Target Value -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="target_value"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-blue-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                ></path>
+              </svg>
+              Target Value *
+            </span>
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="target_value"
+              name="target_value"
+              [(ngModel)]="kpi.target_value"
+              required
+              placeholder="0"
+              class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
+            />
+          </div>
+        </div>
+
+        <!-- Actual Value -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="actual_value"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-green-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 002 2h2a2 2 0 012-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 00-2 2H9z"
+                ></path>
+              </svg>
+              Actual Value
+            </span>
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="actual_value"
+              name="actual_value"
+              [(ngModel)]="kpi.actual_value"
+              placeholder="0"
+              class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Assigned User -->
+      <div class="form-group">
+        <label
+          class="block text-sm font-semibold text-gray-700 mb-2"
+          for="assigned_user"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 text-indigo-500 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              ></path>
+            </svg>
+            Assigned User
+          </span>
+        </label>
+        <div class="relative">
+          <select
+            id="assigned_user"
+            name="assigned_user"
+            required
+            [(ngModel)]="kpi.assigned_user"
+            #statusField="ngModel"
+            class="input-focus w-full pl-4 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+          >
+            <option value="null">Select User</option>
+          </select>
+          <div
+            class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+          >
+            <svg
+              class="w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Date Range -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Start Date -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="start_date"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-emerald-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path>
+              </svg>
+              Start Date *
+            </span>
+          </label>
+          <div class="relative">
+            <input
+              type="date"
+              id="start_date"
+              name="start_date"
+              [(ngModel)]="kpi.start_date"
+              required
+              class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <!-- End Date -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="end_date"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-red-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path>
+              </svg>
+              End Date *
+            </span>
+          </label>
+          <div class="relative">
+            <input
+              type="date"
+              id="end_date"
+              name="end_date"
+              [(ngModel)]="kpi.end_date"
+              required
+              class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white cursor-pointer"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end gap-4 pt-6 border-t border-gray-100">
+        <button
+          (click)="closeModal()"
+          type="button"
+          class="px-6 py-3 cursor-pointer border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-semibold hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+            Cancel
+          </span>
+        </button>
+        <button
+          type="submit"
+          [disabled]="!kpiForm.form.valid"
+          [ngClass]="{
+            'bg-blue-500 cursor-pointer': kpiForm.form.valid,
+            'bg-blue-200 cursor-not-allowed': !kpiForm.form.valid
+          }"
+          class="px-6 py-3 text-white rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 relative overflow-hidden"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            Save KPI
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

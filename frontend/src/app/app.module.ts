@@ -20,6 +20,13 @@ import {
 } from '@angular/common/http';
 import { ManageKpiComponent } from './pages/admin/manage-kpi/manage-kpi.component';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
+import { KpiCardComponent } from './components/kpi-card/kpi-card.component';
+import { CommonModule } from '@angular/common';
+import { DashboardComponent } from './pages/user/dashboard/dashboard.component';
+import { DialogCreateKpiComponent } from './components/dialog-create-kpi/dialog-create-kpi.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ManageKpiCardComponent } from './components/manage-kpi-card/manage-kpi-card.component';
+
 
 @NgModule({
   declarations: [
@@ -31,8 +38,19 @@ import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.compone
     LoginFormComponent,
     ManageKpiComponent,
     UnauthorizedComponent,
+    KpiCardComponent,
+    DashboardComponent,
+    DialogCreateKpiComponent,
+    ManageKpiCardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    CommonModule,
+    MatDialogModule,
+],
   providers: [
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),

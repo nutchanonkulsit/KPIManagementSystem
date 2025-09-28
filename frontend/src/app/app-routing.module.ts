@@ -8,6 +8,7 @@ import { ManageUserComponent } from './pages/admin/manage-user/manage-user.compo
 import { RoleGuard } from './guards/role.guard';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { AuthGuard } from './guards/auth.guard';
+import { DashboardComponent } from './pages/user/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, canActivate: [AuthGuard] },
@@ -16,7 +17,10 @@ const routes: Routes = [
     component: LayoutComponent,
     canActivate: [RoleGuard],
     data: { role: 'user' },
-    children: [{ path: 'kpi', component: KpiComponent }],
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'kpi', component: KpiComponent },
+    ],
   },
   {
     path: 'admin',
@@ -24,6 +28,7 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'admin' },
     children: [
+      { path: 'dashboard', component: DashboardComponent },
       { path: 'manage-kpi', component: ManageKpiComponent },
       {
         path: 'manage-user',

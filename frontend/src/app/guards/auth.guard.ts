@@ -22,8 +22,8 @@ export class AuthGuard implements CanActivate {
 
     // If already logged in → redirect to role-based default page
     if (token && role) {
-      if (role === 'admin') return this.router.parseUrl('/admin/manage-kpi');
-      if (role === 'user') return this.router.parseUrl('/user/kpi');
+      if (role === 'admin') return this.router.parseUrl('/admin/dashboard');
+      if (role === 'user') return this.router.parseUrl('/user/dashboard');
     }
 
     return true; // allow access to /login

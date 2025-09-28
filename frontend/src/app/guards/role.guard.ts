@@ -28,9 +28,9 @@ export class RoleGuard implements CanActivate {
     
     // Redirect based on actual role
     if (role === 'admin') {
-      return this.router.parseUrl('/admin/manage-kpi');
+      return this.router.parseUrl('/admin/dashboard');
     } else if (role === 'user') {
-      return this.router.parseUrl('/user/kpi');
+      return this.router.parseUrl('/user/dashboard');
     } else {
       return true;
     }

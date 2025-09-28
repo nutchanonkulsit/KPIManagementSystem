@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { KpiService } from '../../../services/kpi/kpi.service';
 
 @Component({
-  selector: 'app-kpi',
+  selector: 'app-dashboard',
   standalone: false,
-  templateUrl: './kpi.component.html',
-  styleUrl: './kpi.component.css',
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css',
 })
-export class KpiComponent {
+export class DashboardComponent {
   totalKPI: number = 0;
   onTrackKPI: number = 0;
   atRiskKPI: number = 0;

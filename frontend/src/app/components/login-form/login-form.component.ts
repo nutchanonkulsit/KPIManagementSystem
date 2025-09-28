@@ -29,9 +29,9 @@ export class LoginFormComponent {
         localStorage.setItem('role', response.user.role);
 
         if (response.user.role === 'admin') {
-          this.router.navigate(['/admin/manage-kpi']);
+          this.router.navigate(['/admin/dashboard']);
         } else {
-          this.router.navigate(['/user/kpi']);
+          this.router.navigate(['/user/dashboard']);
         }
       },
       error: (err) => {
