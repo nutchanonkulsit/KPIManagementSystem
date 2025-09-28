@@ -1,6 +1,14 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, Subject, takeUntil } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -27,7 +35,7 @@ export class LayoutComponent {
   // Navigation
   pageTitle = 'KPI Dashboard';
   pageDescription = 'Track and manage your key performance indicators';
-
+  role: any;
   // Search
   searchQuery = '';
 
@@ -35,15 +43,31 @@ export class LayoutComponent {
   notificationCount = 0;
   notifications: Notification[] = [];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  private routerSubscription!: Subscription;
+
+  constructor(
+    @Inject(PLATFORM_ID)
+    private platformId: Object,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.initializeComponent();
+    this.getUserRole();
+
+    this.routerSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.setPageTitleFromRoute();
+      });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   // Host Listener for responsive behavior
@@ -69,7 +93,23 @@ export class LayoutComponent {
     } else if (url.includes('/kpis/create')) {
       this.pageTitle = 'Create New KPI';
       this.pageDescription = 'Define a new key performance indicator';
+    } else if (url.includes('admin/manage-kpi')) {
+      this.pageTitle = 'Manage KPI';
+      this.pageDescription = '';
+    } else if (url.includes('admin/manage-user')) {
+      this.pageTitle = 'Manage User';
+      this.pageDescription = '';
     }
+  }
+
+  getUserRole(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      this.role = localStorage.getItem('role');
+    }
+    // if (typeof localStorage !== 'undefined') {
+    //   return localStorage.getItem('role');
+    // }
+    return null;
   }
 
   logout(): void {
@@ -78,7 +118,7 @@ export class LayoutComponent {
     // Simulate logout process
     setTimeout(() => {
       this.isLoading = false;
-      
+
       localStorage.clear();
 
       this.router.navigate(['/']);

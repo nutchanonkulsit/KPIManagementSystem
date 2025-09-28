@@ -16,7 +16,7 @@
       </div>
 
       <!-- Navigation Menu -->
-      <div class="space-y-2">
+      <div class="space-y-2" *ngIf="role === 'user'">
         <div
           class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4"
         >
@@ -53,7 +53,7 @@
       </div>
 
       <!-- Management Section -->
-      <div class="space-y-2 mt-8" *ngIf="hasManagementAccess">
+      <div class="space-y-2 mt-8" *ngIf="role === 'admin'">
         <div
           class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4"
         >
@@ -61,8 +61,9 @@
         </div>
 
         <a
-          routerLink="/team"
-          routerLinkActive="active-nav"
+          routerLink="/admin/manage-kpi"
+          routerLinkActive="bg-gray-100 text-indigo-600"
+          [routerLinkActiveOptions]="{ exact: true }"
           class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1"
         >
           <span class="text-lg mr-4">👥</span>
@@ -70,8 +71,8 @@
         </a>
 
         <a
-          routerLink="/settings"
-          routerLinkActive="active-nav"
+          routerLink="/admin/manage-user"
+          routerLinkActive="bg-gray-100 text-indigo-600"
           class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1"
         >
           <span class="text-lg mr-4">⚙️</span>
@@ -163,7 +164,7 @@
 <!-- Loading Overlay -->
 <div
   *ngIf="isLoading"
-  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  class="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50"
 >
   <div class="bg-white p-6 rounded-xl shadow-xl">
     <div class="flex items-center space-x-3">
