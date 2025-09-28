@@ -1,17 +1,27 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 
-import { authGuardGuard } from './auth.guard';
-
-describe('authGuardGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => authGuardGuard(...guardParameters));
+describe('AuthGuard', () => {
+  let guard: AuthGuard;
+  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    TestBed.configureTestingModule({
+      providers: [AuthGuard, { provide: Router, useValue: routerSpy }],
+    });
+    guard = TestBed.inject(AuthGuard);
   });
 
   it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+    expect(guard).toBeTruthy();
+  });
+
+  it('should block login if token exists', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('fake-token');
+    const result = guard.canActivate();
+    expect(result).toBeFalse();
+    expect(routerSpy.navigate).not.toHaveBeenCalled(); // depends on your guard
   });
 });
