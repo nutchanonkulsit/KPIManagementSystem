@@ -66,6 +66,28 @@ class KPIController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  async getKPICount(req, res) {
+    try {
+      const total = await KPIService.getKPICount();
+      res.status(200).json({ totalKPI: total });
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+
+  async getKPICountByStatus(req, res) {
+    try {
+      const { status } = req.query;
+      if (!status) {
+        return res.status(400).json({ error: "Status query is required" });
+      }
+      const count = await KPIService.getKPICountByStatus(status);
+      return res.status(200).json({ status, count });
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  }
 }
 
 module.exports = new KPIController();

@@ -31,6 +31,7 @@ module.exports = {
       },
       assigned_user: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: "users", // must match users table name
           key: "id",

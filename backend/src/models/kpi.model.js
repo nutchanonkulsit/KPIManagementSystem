@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       assigned_user: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: "users",
           key: "id",

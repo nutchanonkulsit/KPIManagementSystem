@@ -1,4 +1,5 @@
 const { KPI, User, Role } = require("../models");
+const { col } = require("sequelize");
 
 class KPIService {
   async createKPI(data) {
@@ -7,7 +8,22 @@ class KPIService {
   }
 
   async getAllKPI() {
-    const kpi = await KPI.findAll();
+    const kpi = await KPI.findAll({
+      attributes: {
+        include: [
+          [col("assigned_user_info.username"), "assigned_user"], // alias username → assigned_user
+        ],
+        exclude: ["assigned_user"], // remove the original assigned_user column
+      },
+      include: [
+        {
+          model: User,
+          as: "assigned_user_info",
+          attributes: [],
+        },
+      ],
+      order: [["created_at", "DESC"]],
+    });
     return kpi;
   }
 
@@ -74,7 +90,19 @@ class KPIService {
     return kpis;
   }
 
-  
+  async getKPICount() {
+    const count = await KPI.count();
+    return count;
+  }
+
+  async getKPICountByStatus(status) {
+    const count = await KPI.count({
+      where: {
+        status: status,
+      },
+    });
+    return count;
+  }
 }
 
 module.exports = new KPIService();
