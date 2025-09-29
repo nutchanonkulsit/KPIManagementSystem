@@ -12,7 +12,17 @@ class KPIController {
 
   async getAllKPI(req, res) {
     try {
-      const kpi = await KPIService.getAllKPI();
+      const { user_id, order, status } = req.query;
+      const where = {};
+
+      if (user_id) {
+        where.assigned_user = user_id;
+      }
+      if (status) {
+        where.status = status;
+      }
+
+      const kpi = await KPIService.getAllKPI(where, order);
       res.status(200).json(kpi);
     } catch (e) {
       res.status(400).json({ error: e.message });
@@ -84,6 +94,16 @@ class KPIController {
       }
       const count = await KPIService.getKPICountByStatus(status);
       return res.status(200).json({ status, count });
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+
+  async getKPICountByUserId(req, res) {
+    try {
+      const { user_id } = req.query;
+      const count = await KPIService.getKPICountByUserID(user_id);
+      return res.status(200).json(count);
     } catch (error) {
       res.status(500).json({ message: "Server error" });
     }

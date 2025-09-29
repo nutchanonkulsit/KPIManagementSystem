@@ -7,13 +7,14 @@ class KPIService {
     return kpi;
   }
 
-  async getAllKPI() {
+  async getAllKPI(where, order = "DESC") {
     const kpi = await KPI.findAll({
+      where,
       attributes: {
         include: [
-          [col("assigned_user_info.username"), "assigned_user"], // alias username → assigned_user
+          [col("assigned_user_info.username"), "assigned_username"], // alias username → assigned_user
         ],
-        exclude: ["assigned_user"], // remove the original assigned_user column
+        // exclude: ["assigned_user"], // remove the original assigned_user column
       },
       include: [
         {
@@ -22,7 +23,7 @@ class KPIService {
           attributes: [],
         },
       ],
-      order: [["created_at", "DESC"]],
+      order: [["created_at", order.toUpperCase()]], // ASC or DESC
     });
     return kpi;
   }
@@ -99,6 +100,15 @@ class KPIService {
     const count = await KPI.count({
       where: {
         status: status,
+      },
+    });
+    return count;
+  }
+
+  async getKPICountByUserID(user_id) {
+    const count = await KPI.count({
+      where: {
+        assigned_user: user_id,
       },
     });
     return count;

@@ -1,5 +1,5 @@
-const { User, Role } = require("../models");
-const { Op, where } = require("sequelize");
+const { User, Role, KPI } = require("../models");
+const { Op, where, fn, col } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
 class UserService {
@@ -33,16 +33,29 @@ class UserService {
   }
 
   async findAllUser() {
-    return await User.findAll({
-      attributes: ["id", "username", "email"],
+    const users = await User.findAll({
+      attributes: [
+        "id",
+        "username",
+        "email",
+        [fn("COUNT", col("kpis.id")), "kpiCount"], // count KPIs
+      ],
       include: [
         {
           model: Role,
           as: "role",
           attributes: ["name"],
         },
+        {
+          model: KPI,
+          as: "kpis", // make sure association is defined in your model
+          attributes: [],
+        },
       ],
+      group: ["User.id", "role.id"], // group by to make count work
     });
+
+    return users;
   }
 
   async findUserById(id) {
