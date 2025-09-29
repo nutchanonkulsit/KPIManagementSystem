@@ -27,6 +27,7 @@ export class LoginFormComponent {
         // Example: store token or user data
         localStorage.setItem('token', response.token);
         localStorage.setItem('role', response.user.role);
+        localStorage.setItem('user', JSON.stringify(response.user));
 
         if (response.user.role === 'admin') {
           this.router.navigate(['/admin/dashboard']);

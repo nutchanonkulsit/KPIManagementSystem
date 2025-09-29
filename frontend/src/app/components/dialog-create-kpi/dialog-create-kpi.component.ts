@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject, Input, PLATFORM_ID } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Kpi } from '../../models/kpi';
 import { KpiService } from '../../services/kpi/kpi.service';
@@ -23,6 +23,8 @@ export class DialogCreateKpiComponent {
     end_date: this.getToday(),
   };
 
+  editAssign: boolean = true;
+
   getToday(): string {
     const today = new Date();
     const year = today.getFullYear();
@@ -33,6 +35,7 @@ export class DialogCreateKpiComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(PLATFORM_ID) private platformId: Object,
     private dialogRef: MatDialogRef<DialogCreateKpiComponent>,
     private kpiService: KpiService
   ) {}
@@ -40,10 +43,15 @@ export class DialogCreateKpiComponent {
   ngOnInit() {
     if (this.data) {
       this.mode = this.data.mode || 'create';
-      
+
       if (this.data.kpi) {
         // populate form with KPI to edit/view
         this.kpi = { ...this.data.kpi };
+      }
+
+      if (this.data.userData && this.data.userData.role === 'user') {
+        this.editAssign = false;
+        this.kpi.assigned_user = this.data.userData.id;
       }
     }
   }

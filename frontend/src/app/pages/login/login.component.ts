@@ -24,7 +24,6 @@ export class LoginComponent {
         console.log('✅ Login success:', response);
         this.isLoading = false;
 
-        // Example: store token or user data
         localStorage.setItem('token', response.token);
         this.router.navigate(['/user/kpi']);
       },

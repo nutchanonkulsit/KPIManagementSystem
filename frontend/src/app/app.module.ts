@@ -22,11 +22,11 @@ import { ManageKpiComponent } from './pages/admin/manage-kpi/manage-kpi.componen
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { KpiCardComponent } from './components/kpi-card/kpi-card.component';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './pages/user/dashboard/dashboard.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DialogCreateKpiComponent } from './components/dialog-create-kpi/dialog-create-kpi.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ManageKpiCardComponent } from './components/manage-kpi-card/manage-kpi-card.component';
-
+import { DialogUserComponent } from './components/dialog-user/dialog-user.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +42,8 @@ import { ManageKpiCardComponent } from './components/manage-kpi-card/manage-kpi-
     DashboardComponent,
     DialogCreateKpiComponent,
     ManageKpiCardComponent,
+    DialogUserComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,7 @@ import { ManageKpiCardComponent } from './components/manage-kpi-card/manage-kpi-
     HttpClientModule,
     CommonModule,
     MatDialogModule,
-],
+  ],
   providers: [
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),

@@ -21,8 +21,18 @@
           </svg>
         </div>
         <div>
-          <h2 class="text-2xl font-bold text-white">Create New KPI</h2>
-          <p class="text-blue-100 text-sm">Define your performance indicator</p>
+          <h2 *ngIf="mode === 'create'" class="text-2xl font-bold text-white">
+            Create New KPI
+            <p class="text-blue-100 text-sm">
+              Define your performance indicator
+            </p>
+          </h2>
+          <h2 *ngIf="mode === 'view'" class="text-2xl font-bold text-white">
+            View KPI
+          </h2>
+          <h2 *ngIf="mode === 'edit'" class="text-2xl font-bold text-white">
+            Edit KPI
+          </h2>
         </div>
       </div>
       <!-- <button
@@ -333,9 +343,10 @@
             id="assigned_user"
             name="assigned_user"
             required
-            [disabled]="mode === 'view'"
+            [disabled]="mode === 'view' || !editAssign"
             [ngClass]="{
-              'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+              'bg-gray-100 text-gray-500 cursor-not-allowed':
+                mode === 'view' || editAssign === false,
               'bg-gray-50 focus:bg-white': mode !== 'view'
             }"
             [(ngModel)]="kpi.assigned_user"

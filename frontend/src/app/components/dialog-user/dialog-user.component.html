@@ -1,0 +1,393 @@
+<div>
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center"
+        >
+          <svg
+            class="w-6 h-6 text-white"
+            fill="none"
+            stroke="black"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            ></path>
+          </svg>
+        </div>
+        <div>
+          <h2 *ngIf="mode === 'create'" class="text-2xl font-bold text-white">
+            Create New User
+          </h2>
+          <h2 *ngIf="mode === 'view'" class="text-2xl font-bold text-white">
+            View User
+          </h2>
+          <h2 *ngIf="mode === 'edit'" class="text-2xl font-bold text-white">
+            Edit User
+          </h2>
+          <p class="text-blue-100 text-sm">Manage user account information</p>
+        </div>
+      </div>
+      <button
+        class="text-white hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all duration-200"
+        (click)="closeModal()"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <div class="p-8">
+    <form
+      #userForm="ngForm"
+      (ngSubmit)="createOrUpdateUser(userForm)"
+      class="space-y-6"
+    >
+      <!-- Row 1: Username and Email -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Username -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="username"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-blue-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                ></path>
+              </svg>
+              Username *
+            </span>
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              [(ngModel)]="user.username"
+              required
+              #usernameField="ngModel"
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
+              placeholder="Enter username"
+              class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400"
+            />
+          </div>
+          <span
+            class="error-message text-red-500 text-sm block mt-1"
+            *ngIf="usernameField.invalid && usernameField.touched"
+          >
+            Username is required
+          </span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="email"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-purple-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                ></path>
+              </svg>
+              Email *
+            </span>
+          </label>
+          <div class="relative">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="user.email"
+              required
+              email
+              #emailField="ngModel"
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
+              placeholder="user@example.com"
+              class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400"
+            />
+          </div>
+          <span
+            class="error-message text-red-500 text-sm block mt-1"
+            *ngIf="emailField.invalid && emailField.touched"
+          >
+            <span *ngIf="emailField.errors?.['required']"
+              >Email is required</span
+            >
+            <span *ngIf="emailField.errors?.['email']"
+              >Please enter a valid email</span
+            >
+          </span>
+        </div>
+      </div>
+
+      <!-- Row 2: Password and Role -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Password -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="password"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-green-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                ></path>
+              </svg>
+              Password <span *ngIf="mode !== 'edit'">*</span>
+              <span *ngIf="mode === 'edit'" class="text-xs text-gray-500 ml-1"
+                >(Leave blank to keep current)</span
+              >
+            </span>
+          </label>
+          <div class="relative">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              name="password"
+              [(ngModel)]="user.password"
+              [required]="mode === 'create'"
+              minlength="8"
+              #passwordField="ngModel"
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
+              placeholder="Enter password (min 8 characters)"
+              class="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400"
+            />
+            <span
+              *ngIf="mode !== 'view'"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700 transition-colors p-1"
+              (click)="togglePassword()"
+            >
+              <ng-container *ngIf="showPassword; else hideIcon">
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                  ></path>
+                </svg>
+              </ng-container>
+              <ng-template #hideIcon>
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  ></path>
+                </svg>
+              </ng-template>
+            </span>
+          </div>
+          <span
+            class="error-message text-red-500 text-sm block mt-1"
+            *ngIf="passwordField.invalid && passwordField.touched"
+          >
+            <span *ngIf="passwordField.errors?.['required']"
+              >Password is required</span
+            >
+            <span *ngIf="passwordField.errors?.['minlength']">
+              Password must be at least 8 characters
+            </span>
+          </span>
+        </div>
+
+        <!-- Role -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="role_id"
+          >
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 text-indigo-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                ></path>
+              </svg>
+              Role *
+            </span>
+          </label>
+          <div class="relative">
+            <select
+              id="role_id"
+              name="role_id"
+              [(ngModel)]="user.role_id"
+              required
+              #roleField="ngModel"
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
+              class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 appearance-none cursor-pointer"
+            >
+              <option [ngValue]="null">Select Role</option>
+              <option *ngFor="let role of data.roles" [value]="role.id">
+                {{ role.name }}
+              </option>
+            </select>
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+            >
+              <svg
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <span
+            class="error-message text-red-500 text-sm block mt-1"
+            *ngIf="roleField.invalid && roleField.touched"
+          >
+            Role is required
+          </span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end gap-4 pt-6 border-t border-gray-100">
+        <button
+          (click)="closeModal()"
+          type="button"
+          class="px-6 py-3 cursor-pointer border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-semibold hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+            Cancel
+          </span>
+        </button>
+        <button
+          *ngIf="mode !== 'view'"
+          type="submit"
+          [disabled]="!userForm.form.valid"
+          [ngClass]="{
+            'bg-blue-500 cursor-pointer': userForm.form.valid,
+            'bg-blue-200 cursor-not-allowed': !userForm.form.valid
+          }"
+          class="px-6 py-3 text-white rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 relative overflow-hidden"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            {{ mode === "edit" ? "Update KPI" : "Save KPI" }}
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

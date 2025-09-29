@@ -59,8 +59,6 @@ export class ManageKpiComponent {
         target_value: Number(kpi.target_value),
         actual_value: Number(kpi.actual_value),
       }));
-
-      console.log(this.kpis);
     });
   }
 
@@ -68,7 +66,6 @@ export class ManageKpiComponent {
     this.userService.getAllUser().subscribe({
       next: (res: any) => {
         this.users = res;
-        console.log(this.users);
       },
       error: () => {},
     });

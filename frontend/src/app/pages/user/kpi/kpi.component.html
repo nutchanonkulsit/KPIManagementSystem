@@ -1,14 +1,14 @@
-<!-- kpi-management-dashboard.component.html -->
-<div class="min-h-screen">
+<!-- kpi-management.component.html -->
+<div>
   <!-- Main Content -->
-  <main class="p-6">
+  <main class="p-6 min-h-dvh">
     <!-- Page Header with Actions -->
     <div class="flex justify-between items-start mb-8">
-      <div></div>
-      <div class="flex space-x-3">
-        <button
-          class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2"
-        >
+      <div>
+        <nav class="flex items-center space-x-2 text-sm text-gray-500">
+          <a routerLink="/admin/dashboard" class="hover:text-gray-700"
+            >Dashboard</a
+          >
           <svg
             class="w-4 h-4"
             fill="none"
@@ -19,76 +19,31 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+              d="M9 5l7 7-7 7"
             ></path>
           </svg>
-          <span>Export</span>
-        </button>
-        <button
-          class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 flex items-center space-x-2"
-        >
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            ></path>
-          </svg>
-          <span>Create KPI</span>
-        </button>
+          <span class="text-gray-900">KPI Management</span>
+        </nav>
       </div>
-    </div>
-
-    <!-- KPI Overview Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <!-- Total -->
-      <app-kpi-card
-        title="Total KPIs"
-        subtitle="Active indicators"
-        [value]="totalKPI"
-        color="blue"
-        iconPath="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+      <button
+        class="px-6 py-3 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+        (click)="showCreateModal()"
       >
-      </app-kpi-card>
-
-      <!-- On Track -->
-      <app-kpi-card
-        title="On Track"
-        subtitle="Meeting targets"
-        [value]="onTrackKPI"
-        [percent]="onTrackPercent"
-        color="green"
-        iconPath="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-      >
-      </app-kpi-card>
-
-      <!-- At Risk -->
-      <app-kpi-card
-        title="At Risk"
-        subtitle="Needs attention"
-        [value]="atRiskKPI"
-        [percent]="atRiskPercent"
-        color="yellow"
-        iconPath="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.316 16.5c-.77.833.192 2.5 1.732 2.5z"
-      >
-      </app-kpi-card>
-
-      <!-- Off Track -->
-      <app-kpi-card
-        title="Off Track"
-        subtitle="Critical issues"
-        [value]="offTrackKPI"
-        [percent]="offTrackPercent"
-        color="red"
-        iconPath="M6 18L18 6M6 6l12 12"
-      >
-      </app-kpi-card>
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          ></path>
+        </svg>
+        <span>Create New KPI</span>
+      </button>
     </div>
 
     <!-- Filters and Search -->
@@ -118,944 +73,139 @@
           <input
             type="text"
             placeholder="Search KPIs..."
+            [(ngModel)]="searchText"
             class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
           />
         </div>
 
-        <!-- Filter Buttons -->
+        <!-- Filter Options -->
         <div class="flex flex-wrap gap-3">
-          <select
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-          >
-            <option>All Users</option>
-            <option>John Doe</option>
-            <option>Jane Smith</option>
-            <option>Mike Johnson</option>
-          </select>
+          <div class="relative">
+            <select
+              [(ngModel)]="selectedStatus"
+              class="input-focus w-full pl-4 pr-10 py-3 border border-gray-500 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+            >
+              <option value="">Select Status</option>
+              <option value="On Track">🟢 On Track</option>
+              <option value="At Risk">🟡 At Risk</option>
+              <option value="Off Track">🔴 Off Track</option>
+            </select>
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+            >
+              <svg
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+          </div>
 
-          <select
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-          >
-            <option>All Status</option>
-            <option>On Track</option>
-            <option>At Risk</option>
-            <option>Off Track</option>
-          </select>
+          <!-- <div class="relative">
+            <select
+              [(ngModel)]="selectedUser"
+              class="input-focus pl-4 pr-10 py-3 border border-gray-500 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+            >
+              <option value="">All Users</option>
+              <option *ngFor="let user of users" [value]="user.id">
+                {{ user.username }}
+              </option>
+            </select>
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+            >
+              <svg
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+          </div> -->
 
-          <select
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+          <!-- <button
+            class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center space-x-2"
           >
-            <option>All Categories</option>
-            <option>Sales</option>
-            <option>Marketing</option>
-            <option>Customer Service</option>
-            <option>Operations</option>
-          </select>
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"
+              ></path>
+            </svg>
+            <span>Filter</span>
+          </button> -->
         </div>
       </div>
     </div>
 
-    <!-- KPI List -->
-    <div class="bg-white rounded-2xl shadow-lg border border-gray-100">
-      <!-- Table Header -->
-      <div class="px-6 py-4 border-b border-gray-200">
-        <h3 class="text-lg font-semibold text-gray-900">KPI Overview</h3>
-      </div>
+    <!-- KPI Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <!-- KPI Card 1 -->
 
-      <!-- Table Content -->
-      <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead class="bg-gray-50">
-            <tr>
-              <th
-                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-              >
-                KPI Details
-              </th>
-              <th
-                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-              >
-                Progress
-              </th>
-              <th
-                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-              >
-                Status
-              </th>
-              <th
-                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-              >
-                Assigned To
-              </th>
-              <th
-                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-              >
-                Deadline
-              </th>
-              <th
-                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-              >
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <!-- KPI Row 1 -->
-            <tr class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-start space-x-3">
-                  <div
-                    class="w-10 h-10 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center flex-shrink-0"
-                  >
-                    <svg
-                      class="w-5 h-5 text-green-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 class="font-semibold text-gray-900">
-                      Increase Customer Retention Rate
-                    </h4>
-                    <p class="text-sm text-gray-500">
-                      Improve customer satisfaction and loyalty metrics
-                    </p>
-                    <div
-                      class="flex items-center mt-1 space-x-4 text-xs text-gray-400"
-                    >
-                      <span>Target: 85%</span>
-                      <span>Current: 78%</span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div class="flex-1 bg-gray-200 rounded-full h-2">
-                    <div
-                      class="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full"
-                      style="width: 92%"
-                    ></div>
-                  </div>
-                  <span class="text-sm font-medium text-gray-900">92%</span>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">78 / 85</p>
-              </td>
-              <td class="px-6 py-4">
-                <span
-                  class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full"
-                  >On Track</span
-                >
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div
-                    class="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center"
-                  >
-                    <span class="text-white text-xs font-semibold">JS</span>
-                  </div>
-                  <span class="text-sm text-gray-900">John Smith</span>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">Dec 31, 2024</span>
-                <p class="text-xs text-gray-500">15 days left</p>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <button
-                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button
-                    class="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            <!-- KPI Row 2 -->
-            <tr class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-start space-x-3">
-                  <div
-                    class="w-10 h-10 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center flex-shrink-0"
-                  >
-                    <svg
-                      class="w-5 h-5 text-yellow-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 class="font-semibold text-gray-900">
-                      Monthly Revenue Growth
-                    </h4>
-                    <p class="text-sm text-gray-500">
-                      Achieve 15% month-over-month revenue increase
-                    </p>
-                    <div
-                      class="flex items-center mt-1 space-x-4 text-xs text-gray-400"
-                    >
-                      <span>Target: $150,000</span>
-                      <span>Current: $125,000</span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div class="flex-1 bg-gray-200 rounded-full h-2">
-                    <div
-                      class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full"
-                      style="width: 83%"
-                    ></div>
-                  </div>
-                  <span class="text-sm font-medium text-gray-900">83%</span>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">$125k / $150k</p>
-              </td>
-              <td class="px-6 py-4">
-                <span
-                  class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full"
-                  >At Risk</span
-                >
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div
-                    class="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center"
-                  >
-                    <span class="text-white text-xs font-semibold">MD</span>
-                  </div>
-                  <span class="text-sm text-gray-900">Maria Davis</span>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">Dec 31, 2024</span>
-                <p class="text-xs text-gray-500">15 days left</p>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <button
-                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button
-                    class="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            <!-- KPI Row 3 -->
-            <tr class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-start space-x-3">
-                  <div
-                    class="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center flex-shrink-0"
-                  >
-                    <svg
-                      class="w-5 h-5 text-red-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 class="font-semibold text-gray-900">
-                      Website Response Time
-                    </h4>
-                    <p class="text-sm text-gray-500">
-                      Maintain website loading time under 2 seconds
-                    </p>
-                    <div
-                      class="flex items-center mt-1 space-x-4 text-xs text-gray-400"
-                    >
-                      <span>Target: &lt;2.0s</span>
-                      <span>Current: 2.8s</span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div class="flex-1 bg-gray-200 rounded-full h-2">
-                    <div
-                      class="bg-gradient-to-r from-red-400 to-red-500 h-2 rounded-full"
-                      style="width: 35%"
-                    ></div>
-                  </div>
-                  <span class="text-sm font-medium text-gray-900">35%</span>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">2.8s / 2.0s</p>
-              </td>
-              <td class="px-6 py-4">
-                <span
-                  class="px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full"
-                  >Off Track</span
-                >
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div
-                    class="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center"
-                  >
-                    <span class="text-white text-xs font-semibold">TW</span>
-                  </div>
-                  <span class="text-sm text-gray-900">Tom Wilson</span>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">Dec 15, 2024</span>
-                <p class="text-xs text-red-500">1 day overdue</p>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <button
-                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button
-                    class="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            <!-- KPI Row 4 -->
-            <tr class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-start space-x-3">
-                  <div
-                    class="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center flex-shrink-0"
-                  >
-                    <svg
-                      class="w-5 h-5 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 class="font-semibold text-gray-900">
-                      Team Productivity Score
-                    </h4>
-                    <p class="text-sm text-gray-500">
-                      Measure overall team efficiency and output
-                    </p>
-                    <div
-                      class="flex items-center mt-1 space-x-4 text-xs text-gray-400"
-                    >
-                      <span>Target: 90%</span>
-                      <span>Current: 87%</span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div class="flex-1 bg-gray-200 rounded-full h-2">
-                    <div
-                      class="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full"
-                      style="width: 97%"
-                    ></div>
-                  </div>
-                  <span class="text-sm font-medium text-gray-900">97%</span>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">87 / 90</p>
-              </td>
-              <td class="px-6 py-4">
-                <span
-                  class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full"
-                  >On Track</span
-                >
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div
-                    class="w-8 h-8 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full flex items-center justify-center"
-                  >
-                    <span class="text-white text-xs font-semibold">AB</span>
-                  </div>
-                  <span class="text-sm text-gray-900">Alice Brown</span>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">Jan 15, 2025</span>
-                <p class="text-xs text-gray-500">31 days left</p>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <button
-                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button
-                    class="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            <!-- KPI Row 5 -->
-            <tr class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-start space-x-3">
-                  <div
-                    class="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center flex-shrink-0"
-                  >
-                    <svg
-                      class="w-5 h-5 text-purple-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 class="font-semibold text-gray-900">
-                      Customer Support Resolution Time
-                    </h4>
-                    <p class="text-sm text-gray-500">
-                      Average time to resolve customer tickets
-                    </p>
-                    <div
-                      class="flex items-center mt-1 space-x-4 text-xs text-gray-400"
-                    >
-                      <span>Target: &lt;4 hours</span>
-                      <span>Current: 3.2 hours</span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div class="flex-1 bg-gray-200 rounded-full h-2">
-                    <div
-                      class="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full"
-                      style="width: 80%"
-                    ></div>
-                  </div>
-                  <span class="text-sm font-medium text-gray-900">80%</span>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">3.2h / 4.0h</p>
-              </td>
-              <td class="px-6 py-4">
-                <span
-                  class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full"
-                  >On Track</span
-                >
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <div
-                    class="w-8 h-8 bg-gradient-to-r from-pink-400 to-red-500 rounded-full flex items-center justify-center"
-                  >
-                    <span class="text-white text-xs font-semibold">RJ</span>
-                  </div>
-                  <span class="text-sm text-gray-900">Rachel Johnson</span>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">Dec 31, 2024</span>
-                <p class="text-xs text-gray-500">15 days left</p>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center space-x-2">
-                  <button
-                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button
-                    class="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Table Footer with Pagination -->
-      <div
-        class="px-6 py-4 border-t border-gray-200 flex items-center justify-between"
+      <app-manage-kpi-card
+        *ngFor="let kpi of filteredKpis"
+        class="h-full"
+        [kpi]="kpi"
+        [users]="users"
+        [statusColor]="getStatusColor(kpi.status!)"
+        [progressPercent]="getProgressPercent(kpi)"
+        [userData]="userData"
+        (deleted)="onKpiDeleted($event)"
+        (updated)="onKPIUpdated()"
       >
-        <div class="flex items-center space-x-2 text-sm text-gray-500">
-          <span>Showing</span>
-          <select class="border border-gray-300 rounded px-2 py-1 text-sm">
-            <option>5</option>
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-          </select>
-          <span>of 24 KPIs</span>
+      </app-manage-kpi-card>
+
+      <!-- Add New KPI Card -->
+      <!-- <div
+        class="bg-gray-50 rounded-2xl p-6 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 flex flex-col items-center justify-center cursor-pointer min-h-[320px]"
+        onclick="showCreateModal()"
+      >
+        <div
+          class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4"
+        >
+          <svg
+            class="w-8 h-8 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            ></path>
+          </svg>
         </div>
-        <div class="flex items-center space-x-2">
-          <button
-            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 transition-colors"
-          >
-            Previous
-          </button>
-          <button class="px-3 py-1 bg-blue-500 text-white rounded text-sm">
-            1
-          </button>
-          <button
-            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            2
-          </button>
-          <button
-            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            3
-          </button>
-          <button
-            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 transition-colors"
-          >
-            Next
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Recent Updates Section -->
-    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <!-- Recent KPI Updates -->
-      <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-gray-900">Recent Updates</h3>
-          <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">
-            View All
-          </button>
-        </div>
-
-        <div class="space-y-4">
-          <!-- Update Item -->
-          <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-xl">
-            <div
-              class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0"
-            >
-              <svg
-                class="w-4 h-4 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-900">
-                Customer Retention Rate updated
-              </p>
-              <p class="text-xs text-gray-500">
-                Progress: 78% → 82% by John Smith
-              </p>
-              <p class="text-xs text-gray-400 mt-1">2 minutes ago</p>
-            </div>
-          </div>
-
-          <!-- Update Item -->
-          <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-xl">
-            <div
-              class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0"
-            >
-              <svg
-                class="w-4 h-4 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                ></path>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-900">New KPI created</p>
-              <p class="text-xs text-gray-500">
-                "Social Media Engagement Rate" by Maria Davis
-              </p>
-              <p class="text-xs text-gray-400 mt-1">15 minutes ago</p>
-            </div>
-          </div>
-
-          <!-- Update Item -->
-          <div class="flex items-start space-x-3 p-3 bg-yellow-50 rounded-xl">
-            <div
-              class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0"
-            >
-              <svg
-                class="w-4 h-4 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.316 16.5c-.77.833.192 2.5 1.732 2.5z"
-                ></path>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-900">
-                KPI status changed
-              </p>
-              <p class="text-xs text-gray-500">
-                "Website Response Time" marked as At Risk
-              </p>
-              <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
-            </div>
-          </div>
-
-          <!-- Update Item -->
-          <div class="flex items-start space-x-3 p-3 bg-purple-50 rounded-xl">
-            <div
-              class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0"
-            >
-              <svg
-                class="w-4 h-4 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M7 8h10m0 0V6a2 2 0 00-2-2H9a2 2 0 00-2 2v2m0 0v10a2 2 0 002 2h10a2 2 0 002-2V8M7 8v10a2 2 0 002 2h10a2 2 0 002-2V8"
-                ></path>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-900">Comment added</p>
-              <p class="text-xs text-gray-500">
-                Alice Brown commented on "Team Productivity Score"
-              </p>
-              <p class="text-xs text-gray-400 mt-1">3 hours ago</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Performance Analytics -->
-      <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-        <h3 class="text-xl font-bold text-gray-900 mb-6">
-          Performance Analytics
-        </h3>
-
-        <!-- Analytics Cards -->
-        <div class="space-y-4">
-          <!-- Achievement Rate -->
-          <div
-            class="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl"
-          >
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-gray-700"
-                >Achievement Rate</span
-              >
-              <span class="text-lg font-bold text-green-600">75%</span>
-            </div>
-            <div class="w-full bg-green-200 rounded-full h-2">
-              <div
-                class="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full"
-                style="width: 75%"
-              ></div>
-            </div>
-            <p class="text-xs text-gray-500 mt-1">18 of 24 KPIs on track</p>
-          </div>
-
-          <!-- Overdue KPIs -->
-          <div class="p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-gray-700"
-                >Overdue KPIs</span
-              >
-              <span class="text-lg font-bold text-red-600">2</span>
-            </div>
-            <div class="flex items-center space-x-2">
-              <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-              <span class="text-xs text-gray-600">Website Response Time</span>
-            </div>
-            <div class="flex items-center space-x-2 mt-1">
-              <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-              <span class="text-xs text-gray-600">Server Uptime</span>
-            </div>
-          </div>
-
-          <!-- Team Performance -->
-          <div
-            class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl"
-          >
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-gray-700"
-                >Team Performance</span
-              >
-              <span class="text-lg font-bold text-blue-600">88%</span>
-            </div>
-            <div class="w-full bg-blue-200 rounded-full h-2">
-              <div
-                class="bg-gradient-to-r from-blue-400 to-blue-500 h-2 rounded-full"
-                style="width: 88%"
-              ></div>
-            </div>
-            <p class="text-xs text-gray-500 mt-1">Above target performance</p>
-          </div>
-
-          <!-- Upcoming Deadlines -->
-          <div
-            class="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl"
-          >
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-gray-700"
-                >Upcoming Deadlines</span
-              >
-              <span class="text-lg font-bold text-orange-600">8</span>
-            </div>
-            <p class="text-xs text-gray-500">Next 7 days</p>
-            <div class="mt-2 flex space-x-1">
-              <div class="w-2 h-2 bg-orange-300 rounded-full"></div>
-              <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-              <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
-              <div class="w-2 h-2 bg-orange-600 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="mt-6 pt-6 border-t border-gray-200">
-          <div class="grid grid-cols-3 gap-4">
-            <div class="text-center">
-              <p class="text-2xl font-bold text-gray-900">5</p>
-              <p class="text-xs text-gray-500">Active Users</p>
-            </div>
-            <div class="text-center">
-              <p class="text-2xl font-bold text-gray-900">12</p>
-              <p class="text-xs text-gray-500">Updates Today</p>
-            </div>
-            <div class="text-center">
-              <p class="text-2xl font-bold text-gray-900">3</p>
-              <p class="text-xs text-gray-500">New Comments</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        <h3 class="text-lg font-semibold text-gray-600 mb-2">Add New KPI</h3>
+        <p class="text-gray-500 text-center">
+          Click to create a new Key Performance Indicator
+        </p>
+      </div> -->
     </div>
   </main>
-
-  <!-- Footer -->
   <footer class="bg-white border-t border-gray-100 mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <div class="flex justify-between items-center">

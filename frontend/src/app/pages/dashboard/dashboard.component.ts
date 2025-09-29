@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { KpiService } from '../../../services/kpi/kpi.service';
-
+import { KpiService } from '../../services/kpi/kpi.service';
 @Component({
   selector: 'app-dashboard',
   standalone: false,

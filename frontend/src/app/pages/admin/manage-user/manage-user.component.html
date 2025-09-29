@@ -1,1 +1,352 @@
-<p>manage-user works!</p>
+<div>
+  <!-- Main Content -->
+  <main class="p-6 min-h-dvh">
+    <!-- Page Header with Actions -->
+    <div class="flex justify-between items-start mb-8">
+      <div>
+        <nav class="flex items-center space-x-2 text-sm text-gray-500">
+          <a routerLink="/admin/dashboard" class="hover:text-gray-700"
+            >Dashboard</a
+          >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            ></path>
+          </svg>
+          <span class="text-gray-900">User Management</span>
+        </nav>
+      </div>
+
+      <button
+        (click)="openCreateModal()"
+        class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          ></path>
+        </svg>
+        <span>Add New User</span>
+      </button>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mb-8">
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0"
+      >
+        <!-- Search -->
+        <div class="relative flex-1 max-w-md">
+          <div
+            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+          >
+            <svg
+              class="h-5 w-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+          </div>
+          <input
+            type="text"
+            [(ngModel)]="searchText"
+            placeholder="Search users by name or email..."
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+          />
+        </div>
+
+        <!-- Filter Options -->
+
+        <div class="flex flex-wrap gap-3">
+          <div class="relative">
+            <select
+              id="role"
+              name="role"
+              [(ngModel)]="selectedRole"
+              class="input-focus pl-4 pr-10 py-3 border border-gray-500 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+            >
+              <option [ngValue]="null">Select Role</option>
+              <option *ngFor="let role of roles" [ngValue]="role.name">
+                {{ role.name }}
+              </option>
+            </select>
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+            >
+              <svg
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+      <!-- Table Header -->
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-900">Users List</h3>
+      </div>
+
+      <!-- Table Content -->
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
+              >
+                User
+              </th>
+              <th
+                class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
+              >
+                Role
+              </th>
+              <th
+                class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
+              >
+                KPIs Assigned
+              </th>
+              <th
+                class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr
+              *ngFor="let user of filteredUsers"
+              class="hover:bg-gray-50 transition-colors"
+            >
+              <!-- Avatar + Username -->
+              <td class="px-6 py-4">
+                <div class="flex justify-start items-center space-x-3">
+                  <div
+                    class="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0"
+                  >
+                    <span class="text-white text-sm font-semibold">
+                      {{ user.username.substring(0, 2).toUpperCase() }}
+                    </span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-gray-900">
+                      {{ user.username }}
+                    </p>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Role -->
+              <td class="px-6 py-4 text-center">
+                <span
+                  [ngClass]="{
+                    'bg-green-100 text-green-700': user.role?.name === 'user',
+                    'bg-purple-100 text-purple-700': user.role?.name === 'admin'
+                  }"
+                  class="px-3 py-1 text-xs font-semibold rounded-full"
+                >
+                  {{ user.role?.name }}
+                </span>
+              </td>
+
+              <!-- Email -->
+              <td class="px-6 py-4 text-center">
+                <p class="text-gray-900">{{ user.email }}</p>
+              </td>
+
+              <!-- KPIs Count (if you have it, otherwise 0) -->
+              <td class="px-6 py-4 text-center">
+                <span class="text-gray-900 font-medium">
+                  {{ user.kpiCount || 0 }}
+                </span>
+                <span class="text-gray-500 text-sm ml-1">KPIs</span>
+              </td>
+
+              <!-- Actions -->
+              <td class="px-6 py-4 text-center">
+                <div class="flex justify-center items-center space-x-2">
+                  <button
+                    (click)="openEditModal(user!)"
+                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    title="Edit"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    (click)="openViewModal(user!)"
+                    class="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                    title="View"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    (click)="deleteUser(user.id)"
+                    class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Delete"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table Footer with Pagination -->
+      <!-- <div
+        class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50"
+      >
+        <div class="flex items-center space-x-2 text-sm text-gray-500">
+          <span>Showing</span>
+          <select class="border border-gray-300 rounded px-2 py-1 text-sm">
+            <option>6</option>
+            <option>12</option>
+            <option>24</option>
+            <option>50</option>
+          </select>
+          <span>of 24 users</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button
+            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-100 transition-colors"
+          >
+            Previous
+          </button>
+          <button class="px-3 py-1 bg-blue-500 text-white rounded text-sm">
+            1
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+          >
+            2
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+          >
+            3
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+          >
+            4
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-100 transition-colors"
+          >
+            Next
+          </button>
+        </div>
+      </div> -->
+    </div> 
+  </main>
+  <footer class="bg-white border-t border-gray-100 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex justify-between items-center">
+        <p class="text-sm text-gray-500">
+          © 2025 KPI Manager. All rights reserved.
+        </p>
+        <div class="flex space-x-6">
+          <a
+            href="#"
+            class="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+            >Privacy</a
+          >
+          <a
+            href="#"
+            class="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+            >Terms</a
+          >
+          <a
+            href="#"
+            class="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+            >Support</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

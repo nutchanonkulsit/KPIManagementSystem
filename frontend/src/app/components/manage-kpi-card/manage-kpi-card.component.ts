@@ -16,6 +16,7 @@ export class ManageKpiCardComponent {
   @Input() statusColor!: string; // green / yellow / red
   @Input() progressPercent: number = 0; // calculated percent
   @Input() iconPath?: string; // optional SVG path
+  @Input() userData?: any;
   @Output() deleted = new EventEmitter<number>();
   @Output() updated = new EventEmitter<void>();
 
@@ -49,6 +50,7 @@ export class ManageKpiCardComponent {
         mode: 'edit',
         kpi,
         users: this.users,
+        userData: this.userData
       },
     });
 

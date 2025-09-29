@@ -79,11 +79,17 @@ class KPIService {
 
     const kpis = await KPI.findAll({
       where: { assigned_user: user_id },
+      attributes: {
+        include: [
+          [col("assigned_user_info.username"), "assigned_username"], // alias username → assigned_user
+        ],
+        // exclude: ["assigned_user"], // remove the original assigned_user column
+      },
       include: [
         {
           model: User,
           as: "assigned_user_info",
-          attributes: ["id", "username", "email"],
+          attributes: [],
         },
       ],
     });

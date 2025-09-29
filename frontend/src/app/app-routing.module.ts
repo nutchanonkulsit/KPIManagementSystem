@@ -8,7 +8,7 @@ import { ManageUserComponent } from './pages/admin/manage-user/manage-user.compo
 import { RoleGuard } from './guards/role.guard';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { AuthGuard } from './guards/auth.guard';
-import { DashboardComponent } from './pages/user/dashboard/dashboard.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, canActivate: [AuthGuard] },

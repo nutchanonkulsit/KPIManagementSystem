@@ -15,6 +15,11 @@ export class KpiService {
     return this.http.get(`${environment.apiUrl}/kpis`);
   }
 
+  getKPIByUserID(id: number) {
+    const params = new HttpParams().set('user_id', id);
+    return this.http.get(`${environment.apiUrl}/kpis/user`, { params });
+  }
+
   getKPICount() {
     return this.http.get(`${environment.apiUrl}/kpis/count`);
   }
