@@ -31,4 +31,12 @@ export class KpiService {
   createKPI(kpi: Kpi): Observable<Kpi> {
     return this.http.post<Kpi>(`${environment.apiUrl}/kpis`, kpi);
   }
+
+  updateKPI(kpi: Kpi) {
+    return this.http.put(`${environment.apiUrl}/kpis/${kpi.id}`, kpi);
+  }
+
+  deleteKPI(id: number) {
+    return this.http.delete(`${environment.apiUrl}/kpis/${id}`);
+  }
 }

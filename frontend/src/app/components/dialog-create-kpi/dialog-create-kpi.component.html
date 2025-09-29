@@ -25,7 +25,7 @@
           <p class="text-blue-100 text-sm">Define your performance indicator</p>
         </div>
       </div>
-      <button
+      <!-- <button
         class="text-white hover:bg-white hover:text-black hover:bg-opacity-20 rounded-full p-2 transition-all duration-200"
         (click)="closeModal()"
       >
@@ -42,13 +42,17 @@
             d="M6 18L18 6M6 6l12 12"
           ></path>
         </svg>
-      </button>
+      </button> -->
     </div>
   </div>
 
   <!-- Form Content -->
   <div class="p-8">
-    <form #kpiForm="ngForm" (ngSubmit)="createKPI(kpiForm)" class="space-y-6">
+    <form
+      #kpiForm="ngForm"
+      (ngSubmit)="createOrUpdateKPI(kpiForm)"
+      class="space-y-6"
+    >
       <!-- Row 1: Title and Description -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Title -->
@@ -81,6 +85,11 @@
               name="title"
               [(ngModel)]="kpi.title"
               required
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
               #titleField="ngModel"
               placeholder="Enter KPI title"
               class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
@@ -122,6 +131,11 @@
               id="status"
               name="status"
               required
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
               [(ngModel)]="kpi.status"
               #statusField="ngModel"
               class="input-focus w-full pl-4 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
@@ -188,6 +202,11 @@
         <textarea
           id="description"
           name="description"
+          [disabled]="mode === 'view'"
+          [ngClass]="{
+            'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+            'bg-gray-50 focus:bg-white': mode !== 'view'
+          }"
           rows="3"
           [(ngModel)]="kpi.description"
           placeholder="Describe your KPI objectives and methodology..."
@@ -225,12 +244,24 @@
               type="number"
               id="target_value"
               name="target_value"
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
               [(ngModel)]="kpi.target_value"
               required
               placeholder="0"
+              #targetField="ngModel"
               class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
             />
           </div>
+          <span
+            class="error-message text-red-500 text-sm block"
+            *ngIf="targetField.invalid && targetField.touched"
+          >
+            Target Value is required
+          </span>
         </div>
 
         <!-- Actual Value -->
@@ -261,6 +292,11 @@
               type="number"
               id="actual_value"
               name="actual_value"
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
               [(ngModel)]="kpi.actual_value"
               placeholder="0"
               class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
@@ -297,12 +333,21 @@
             id="assigned_user"
             name="assigned_user"
             required
+            [disabled]="mode === 'view'"
+            [ngClass]="{
+              'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+              'bg-gray-50 focus:bg-white': mode !== 'view'
+            }"
             [(ngModel)]="kpi.assigned_user"
             #statusField="ngModel"
             class="input-focus w-full pl-4 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
           >
-            <option value="null">Select User</option>
+            <option [ngValue]="null">Select User</option>
+            <option *ngFor="let user of data.users" [value]="user.id">
+              {{ user.username }}
+            </option>
           </select>
+
           <div
             class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
           >
@@ -353,6 +398,11 @@
               type="date"
               id="start_date"
               name="start_date"
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
               [(ngModel)]="kpi.start_date"
               required
               class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white cursor-pointer"
@@ -388,6 +438,11 @@
               type="date"
               id="end_date"
               name="end_date"
+              [disabled]="mode === 'view'"
+              [ngClass]="{
+                'bg-gray-100 text-gray-500 cursor-not-allowed': mode === 'view',
+                'bg-gray-50 focus:bg-white': mode !== 'view'
+              }"
               [(ngModel)]="kpi.end_date"
               required
               class="input-focus w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 focus:bg-white cursor-pointer"
@@ -421,6 +476,7 @@
           </span>
         </button>
         <button
+          *ngIf="mode !== 'view'"
           type="submit"
           [disabled]="!kpiForm.form.valid"
           [ngClass]="{
@@ -443,7 +499,7 @@
                 d="M5 13l4 4L19 7"
               ></path>
             </svg>
-            Save KPI
+            {{ mode === "edit" ? "Update KPI" : "Save KPI" }}
           </span>
         </button>
       </div>

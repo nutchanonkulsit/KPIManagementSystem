@@ -98,8 +98,8 @@ export class LayoutComponent {
       this.pageDescription =
         'Create, read, update, and delete Key Performance Indicators';
     } else if (url.includes('admin/manage-user')) {
-      this.pageTitle = 'Manage User';
-      this.pageDescription = '';
+      this.pageTitle = 'User Management';
+      this.pageDescription = 'Manage system users and assign roles';
     }
   }
 
