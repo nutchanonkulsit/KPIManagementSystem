@@ -18,8 +18,8 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'user' },
     children: [
-      { path: 'dashboard', component: DashboardComponent },
       { path: 'kpi', component: KpiComponent },
+      { path: 'dashboard', component: DashboardComponent },
     ],
   },
   {

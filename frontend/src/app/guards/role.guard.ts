@@ -30,7 +30,7 @@ export class RoleGuard implements CanActivate {
     if (role === 'admin') {
       return this.router.parseUrl('/admin/dashboard');
     } else if (role === 'user') {
-      return this.router.parseUrl('/user/dashboard');
+      return this.router.parseUrl('/user/kpi');
     } else {
       return true;
     }

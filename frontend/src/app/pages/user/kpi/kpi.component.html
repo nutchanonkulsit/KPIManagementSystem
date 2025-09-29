@@ -172,6 +172,7 @@
         [statusColor]="getStatusColor(kpi.status!)"
         [progressPercent]="getProgressPercent(kpi)"
         [userData]="userData"
+        [currentUser]="currentUser"
         (deleted)="onKpiDeleted($event)"
         (updated)="onKPIUpdated()"
       >

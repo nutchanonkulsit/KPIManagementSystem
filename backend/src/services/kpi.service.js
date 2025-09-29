@@ -92,6 +92,7 @@ class KPIService {
           attributes: [],
         },
       ],
+      order: [["created_at", "DESC"]],
     });
 
     return kpis;

@@ -16,6 +16,7 @@ export class KpiComponent {
   kpis: Kpi[] = [];
   users: any = [];
   userData: any;
+  currentUser: any;
 
   selectedStatus: any = '';
   searchText: any = '';
@@ -43,6 +44,8 @@ export class KpiComponent {
     if (isPlatformBrowser(this.platformId)) {
       const userStr = localStorage.getItem('user');
       if (userStr) {
+        this.currentUser = userStr ? JSON.parse(userStr) : null;
+
         try {
           return JSON.parse(userStr);
         } catch (e) {

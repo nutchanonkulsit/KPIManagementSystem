@@ -45,7 +45,11 @@ export class KpiService {
   deleteKPI(id: number) {
     return this.http.delete(`${environment.apiUrl}/kpis/${id}`);
   }
-  getLast6MonthsProgress(): Observable<
+
+  getLast6MonthsProgress(
+    userId?: number | null,
+    status?: string | null
+  ): Observable<
     {
       month: string;
       progress: number;
@@ -58,12 +62,23 @@ export class KpiService {
 
     for (let i = 5; i >= 0; i--) {
       const date = moment().subtract(i, 'months');
-      const monthNum = date.month() + 1; // Month 1-12
+      const monthNum = date.month() + 1;
       labels.push(date.format('MMM YYYY'));
 
-      const params = new HttpParams()
+      let params = new HttpParams()
         .set('month', monthNum.toString())
         .set('year', date.year().toString());
+
+      if (userId != null) {
+        // only add if userId exists
+        params = params.set('user_id', userId.toString());
+      }
+
+      if (status) {
+        // only add if status exists
+        params = params.set('status', status);
+      }
+
 
       requests.push(
         this.http.get(`${environment.apiUrl}/kpis/progress`, { params })

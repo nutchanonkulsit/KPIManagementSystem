@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogCreateKpiComponent } from '../../../components/dialog-create-kpi/dialog-create-kpi.component';
 import { KpiService } from '../../../services/kpi/kpi.service';
 import { Kpi } from '../../../models/kpi';
 import { UserService } from '../../../services/user/user.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-manage-kpi',
@@ -14,12 +15,14 @@ import { UserService } from '../../../services/user/user.service';
 export class ManageKpiComponent {
   kpis: Kpi[] = [];
   users: any = [];
+  currentUser: any;
 
   selectedStatus: any = '';
   searchText: any = '';
   selectedUser: any = '';
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     private dialog: MatDialog,
     private kpiService: KpiService,
     private userService: UserService
@@ -28,6 +31,11 @@ export class ManageKpiComponent {
   ngOnInit() {
     this.getAllKPI();
     this.getAllUser();
+    if (isPlatformBrowser(this.platformId)) {
+      const userStr = localStorage.getItem('user');
+      this.currentUser = userStr ? JSON.parse(userStr) : null;
+    }
+  
   }
 
   get filteredKpis(): Kpi[] {
@@ -89,7 +97,7 @@ export class ManageKpiComponent {
   }
 
   onKPIUpdated() {
-    this.getAllKPI(); 
+    this.getAllKPI();
   }
 
   showCreateModal() {

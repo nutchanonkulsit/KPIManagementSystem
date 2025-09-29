@@ -18,6 +18,7 @@ export class ManageKpiCardComponent {
   @Input() progressPercent: number = 0; // calculated percent
   @Input() iconPath?: string; // optional SVG path
   @Input() userData?: any;
+  @Input() currentUser!: any;
   @Output() deleted = new EventEmitter<number>();
   @Output() updated = new EventEmitter<void>();
 
@@ -88,11 +89,13 @@ export class ManageKpiCardComponent {
       maxHeight: '90dvh',
       data: {
         kpi,
+        currentUser: this.currentUser,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.updated.emit();
       }
     });
   }

@@ -1,6 +1,13 @@
 import { Component, Inject, Input, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { ChartOptions, ChartData, TooltipItem } from 'chart.js';
+import {
+  ChartOptions,
+  ChartData,
+  TooltipItem,
+  registerables,
+  Chart,
+} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 interface KpiMonthData {
   month: string;
@@ -21,6 +28,9 @@ export class ChartComponent {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
+    if (this.isBrowser) {
+      Chart.register(...registerables, ChartDataLabels); // Register Chart.js + plugin globally
+    }
   }
 
   type: 'bar' = 'bar';
@@ -34,7 +44,7 @@ export class ChartComponent {
           borderRadius: 12,
           data: this.kpiData.map((d) => d.progress),
           backgroundColor: 'rgba(54, 162, 235, 0.7)',
-          
+          barPercentage: 0.5
         },
       ],
     };
@@ -45,6 +55,13 @@ export class ChartComponent {
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+        color: '#000',
+        font: { weight: 'bold' },
+        formatter: (value) => value + '%',
+      },
       tooltip: {
         enabled: false,
         external: (context) => {
@@ -78,18 +95,17 @@ export class ChartComponent {
 
           tooltipEl.innerHTML = `
             <div><b>${item.month}</b></div>
-            <div>${getMarker('rgba(54,162,235,0.7)')} Progress: ${
+            <div>${getMarker('rgba(75,192,192,0.7)')} Progress: ${
             item.progress
           }%</div>
-            <div>${getMarker('rgba(255,206,86,0.7)')} Actual: ${
+            <div>${getMarker('rgba(54,162,235,0.7)')} Actual: ${
             item.actual_value
           }</div>
-            <div>${getMarker('rgba(75,192,192,0.7)')} Target: ${
+            <div>${getMarker('rgba(201,203,207,0.7)')} Target: ${
             item.target_value
           }</div>
           `;
 
-          // กำหนดตำแหน่ง tooltip
           const position = context.chart.canvas.getBoundingClientRect();
           tooltipEl.style.opacity = '1';
           tooltipEl.style.left =

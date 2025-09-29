@@ -58,7 +58,6 @@ class KPIController {
     }
   }
 
-  // In your KPIController.js
   async getAllKPIByUser(req, res) {
     try {
       const { user_id } = req.query;

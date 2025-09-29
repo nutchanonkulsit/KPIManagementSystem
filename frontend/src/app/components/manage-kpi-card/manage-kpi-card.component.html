@@ -53,7 +53,7 @@
       </div>
       <div class="w-full bg-gray-200 rounded-full h-2">
         <div
-          class="h-2 rounded-full"
+          class="h-2 rounded-full max-w-full"
           [ngClass]="{
             'bg-green-400': statusColor === 'green',
             'bg-yellow-400': statusColor === 'yellow',
@@ -98,7 +98,7 @@
     </button>
     <button
       (click)="deleteKPI()"
-      class="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
+      class=" px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
     >
       <svg
         class="w-4 h-4"
