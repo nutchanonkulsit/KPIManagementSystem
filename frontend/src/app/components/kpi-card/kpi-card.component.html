@@ -2,13 +2,14 @@
   class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
 >
   <div class="flex items-center justify-between mb-4">
+    
     <div
-      class="w-12 h-12 bg-gradient-to-br from-{{ color }}-100 to-{{
-        color
-      }}-200 rounded-xl flex items-center justify-center"
+      class="w-12 h-12 bg-gradient-to-br rounded-xl flex items-center justify-center"
+      [ngClass]="colorClasses.container"
     >
       <svg
-        class="w-6 h-6 text-{{ color }}-600"
+        class="w-6 h-6"
+        [ngClass]="colorClasses.text"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -22,14 +23,15 @@
       </svg>
     </div>
 
+    
     <span
-      class="text-{{ color }}-600 bg-{{
-        color
-      }}-50 px-2 py-1 rounded-full text-xs font-semibold"
+      class="px-2 py-1 rounded-full text-xs font-semibold"
+      [ngClass]="colorClasses.badge"
     >
       {{ percent !== undefined ? percent + "%" : "Total" }}
     </span>
   </div>
+
 
   <h3 class="text-gray-500 text-sm font-medium mb-1">{{ title }}</h3>
   <p class="text-3xl font-bold text-gray-900">{{ value || 0 }}</p>
