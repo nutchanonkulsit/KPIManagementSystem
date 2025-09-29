@@ -1,0 +1,279 @@
+<div>
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center"
+        >
+          <svg
+            class="w-6 h-6 text-white"
+            fill="none"
+            stroke="black"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            ></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-white">Update KPI</h2>
+          <p class="text-blue-100 text-sm">Modify KPI performance metrics</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <div class="p-8">
+    <form #kpiForm="ngForm" (ngSubmit)="updateKPI(kpiForm)" class="space-y-6">
+      <!-- KPI Selection -->
+      <div class="form-group">
+        <label
+          class="block text-sm font-semibold text-gray-700 mb-2"
+          for="kpi_id"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 text-blue-500 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              ></path>
+            </svg>
+            KPI
+          </span>
+        </label>
+        <input
+          type="text"
+          disabled
+          class="w-full pl-4 pr-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Target Value -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="target_value"
+          >
+            <span class="flex items-center">
+              <!-- Bullseye / Target Icon -->
+              <svg
+                class="w-4 h-4 text-blue-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Target Value
+            </span>
+          </label>
+          <input
+            type="text"
+            disabled
+            class="w-full pl-4 pr-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
+          />
+        </div>
+
+        <!-- Actual Value -->
+        <div class="form-group">
+          <label
+            class="block text-sm font-semibold text-gray-700 mb-2"
+            for="actual_value"
+          >
+            <span class="flex items-center">
+              <!-- Chart / Trending Up Icon -->
+              <svg
+                class="w-4 h-4 text-green-500 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 17l6-6 4 4 8-8"
+                />
+              </svg>
+              Actual Value
+            </span>
+          </label>
+          <input
+            type="text"
+            disabled
+            class="w-full pl-4 pr-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
+          />
+        </div>
+      </div>
+
+      <!-- Current vs New Value Display -->
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-600">Current Value</p>
+            <p class="text-2xl font-bold text-gray-800"></p>
+          </div>
+          <svg
+            class="w-8 h-8 text-blue-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            ></path>
+          </svg>
+          <div>
+            <p class="text-sm text-gray-600">New Value</p>
+
+            <p class="text-2xl font-bold text-blue-600"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Updated Value -->
+      <div class="form-group">
+        <label
+          class="block text-sm font-semibold text-gray-700 mb-2"
+          for="updated_value"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 text-green-500 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+              ></path>
+            </svg>
+            Updated Value *
+          </span>
+        </label>
+        <div class="relative">
+          <input
+            type="number"
+            id="updated_value"
+            name="updated_value"
+            required
+            placeholder="Enter new value"
+            class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white"
+          />
+        </div>
+      </div>
+
+      <!-- Comment -->
+      <div class="form-group">
+        <label
+          class="block text-sm font-semibold text-gray-700 mb-2"
+          for="comment"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 text-purple-500 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+              ></path>
+            </svg>
+            Comment *
+          </span>
+        </label>
+        <div class="relative">
+          <textarea
+            id="comment"
+            name="comment"
+            required
+            rows="4"
+            placeholder="Add your comment or notes about this update..."
+            class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 bg-gray-50 focus:bg-white resize-none"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end gap-4 pt-6 border-t border-gray-100">
+        <button
+          (click)="closeModal()"
+          type="button"
+          class="px-6 py-3 cursor-pointer border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-semibold hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+            Cancel
+          </span>
+        </button>
+        <button
+          type="submit"
+          [disabled]="!kpiForm.form.valid"
+          [ngClass]="{
+            'bg-blue-500 cursor-pointer': kpiForm.form.valid,
+            'bg-blue-200 cursor-not-allowed': !kpiForm.form.valid
+          }"
+          class="px-6 py-3 bg-blue text-white rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 relative overflow-hidden"
+        >
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            Update KPI
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

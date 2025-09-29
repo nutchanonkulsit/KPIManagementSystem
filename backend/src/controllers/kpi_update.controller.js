@@ -13,7 +13,13 @@ class KPIUpdateController {
   async getAllKPIUpdateByKPIID(req, res) {
     try {
       const { kpi_id } = req.query;
-      const kpiUpdate = await KPIUpdateService.getAllKPIUpdateByKPIID(kpi_id);
+      const where = {};
+      
+      if(kpi_id) {
+        where.kpi_id = kpi_id;
+      }
+
+      const kpiUpdate = await KPIUpdateService.getAllKPIUpdateByKPIID(where);
       res.status(200).json(kpiUpdate);
     } catch (error) {
       res.status(400).json({ error: error.message });

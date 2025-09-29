@@ -27,6 +27,7 @@ import { DialogCreateKpiComponent } from './components/dialog-create-kpi/dialog-
 import { MatDialogModule } from '@angular/material/dialog';
 import { ManageKpiCardComponent } from './components/manage-kpi-card/manage-kpi-card.component';
 import { DialogUserComponent } from './components/dialog-user/dialog-user.component';
+import { DialogKpiUpdateComponent } from './components/dialog-kpi-update/dialog-kpi-update.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { DialogUserComponent } from './components/dialog-user/dialog-user.compon
     ManageKpiCardComponent,
     DialogUserComponent,
     DashboardComponent,
+    DialogKpiUpdateComponent,
   ],
   imports: [
     BrowserModule,

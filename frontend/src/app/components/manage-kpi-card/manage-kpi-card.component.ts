@@ -3,6 +3,7 @@ import { KpiService } from '../../services/kpi/kpi.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogCreateKpiComponent } from '../dialog-create-kpi/dialog-create-kpi.component';
 import { Kpi } from '../../models/kpi';
+import { DialogKpiUpdateComponent } from '../dialog-kpi-update/dialog-kpi-update.component';
 
 @Component({
   selector: 'app-manage-kpi-card',
@@ -50,7 +51,7 @@ export class ManageKpiCardComponent {
         mode: 'edit',
         kpi,
         users: this.users,
-        userData: this.userData
+        userData: this.userData,
       },
     });
 
@@ -71,6 +72,22 @@ export class ManageKpiCardComponent {
         mode: 'view',
         kpi,
         users: this.users,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      }
+    });
+  }
+
+  openUpdateDialog(kpi: Kpi) {
+    const dialogRef = this.dialog.open(DialogKpiUpdateComponent, {
+      width: '800px',
+      maxWidth: '80dvw',
+      maxHeight: '90dvh',
+      data: {
+        kpi,
       },
     });
 
