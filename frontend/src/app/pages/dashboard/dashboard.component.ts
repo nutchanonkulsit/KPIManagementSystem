@@ -16,6 +16,8 @@ export class DashboardComponent {
   atRiskPercent: number = 0;
   offTrackPercent: number = 0;
 
+  kpiMonthly: any = [];
+
   constructor(private kpiService: KpiService) {}
 
   ngOnInit() {
@@ -28,7 +30,7 @@ export class DashboardComponent {
     this.getKPICountByAtRisk();
     this.getKPICountByOffTrack();
     this.kpiService.getLast6MonthsProgress().subscribe((res) => {
-      console.log(res);
+      this.kpiMonthly = res;
     });
   }
 

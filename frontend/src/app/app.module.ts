@@ -28,6 +28,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ManageKpiCardComponent } from './components/manage-kpi-card/manage-kpi-card.component';
 import { DialogUserComponent } from './components/dialog-user/dialog-user.component';
 import { DialogKpiUpdateComponent } from './components/dialog-kpi-update/dialog-kpi-update.component';
+import { ChartComponent } from './components/chart/chart.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { DialogKpiUpdateComponent } from './components/dialog-kpi-update/dialog-
     DialogUserComponent,
     DashboardComponent,
     DialogKpiUpdateComponent,
+    ChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ import { DialogKpiUpdateComponent } from './components/dialog-kpi-update/dialog-
     HttpClientModule,
     CommonModule,
     MatDialogModule,
+    NgChartsModule,
   ],
   providers: [
     provideClientHydration(withEventReplay()),

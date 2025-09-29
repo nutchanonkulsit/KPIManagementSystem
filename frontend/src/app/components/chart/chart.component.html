@@ -1,0 +1,41 @@
+<div
+  class="h-[600px] bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-2xl border border-gray-100"
+  *ngIf="isBrowser"
+>
+  <div class="mb-6">
+    <div class="flex items-center justify-center space-x-3">
+      <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+        <svg
+          class="w-6 h-6 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          ></path>
+        </svg>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Progress Bar In Each Month KPI
+        </h2>
+        <p class="text-sm text-gray-500 mt-1">Monthly performance tracking and analysis</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Container -->
+  <div class="bg-white rounded-xl p-4 shadow-inner border border-gray-100 h-[calc(100%-120px)]">
+    <canvas 
+      baseChart 
+      [type]="type" 
+      [data]="data" 
+      [options]="options"
+      class="w-full h-full"
+    ></canvas>
+  </div>
+</div>
