@@ -36,12 +36,8 @@ export class LayoutComponent {
   pageTitle = 'KPI Dashboard';
   pageDescription = 'Track and manage your key performance indicators';
   role: any;
-  // Search
-  searchQuery = '';
 
-  // Notifications
-  notificationCount = 0;
-  notifications: Notification[] = [];
+  userData: any;
 
   private routerSubscription!: Subscription;
 
@@ -54,6 +50,8 @@ export class LayoutComponent {
   ngOnInit(): void {
     this.initializeComponent();
     this.getUserRole();
+
+    this.userData = this.getUserFromStorage();
 
     this.routerSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -88,8 +86,9 @@ export class LayoutComponent {
     const url = this.router.url;
 
     if (url.includes('/user/kpi')) {
-      this.pageTitle = 'Performance Dashboard';
-      this.pageDescription = 'Track and manage your key performance indicators';
+      this.pageTitle = 'KPI Management';
+      this.pageDescription =
+        'Create, read, update, and delete Key Performance Indicators';
     } else if (url.includes('/kpis/create')) {
       this.pageTitle = 'Create New KPI';
       this.pageDescription = 'Define a new key performance indicator';
@@ -100,7 +99,24 @@ export class LayoutComponent {
     } else if (url.includes('admin/manage-user')) {
       this.pageTitle = 'User Management';
       this.pageDescription = 'Manage system users and assign roles';
+    } else if (url.includes('user/dashboard')) {
+      this.pageTitle = 'User Dashboard';
+      this.pageDescription = 'Manage system users and assign roles';
     }
+  }
+
+  getUserFromStorage(): any {
+    if (isPlatformBrowser(this.platformId)) {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        try {
+          return JSON.parse(userStr);
+        } catch (e) {
+          console.error('Failed to parse user from storage', e);
+        }
+      }
+    }
+    return null;
   }
 
   getUserRole(): string | null {

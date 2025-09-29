@@ -9,6 +9,8 @@ router.get("/count", KPIController.getKPICount);
 router.get("/count/status", KPIController.getKPICountByStatus);
 
 router.get("/user", KPIController.getAllKPIByUser);
+router.get("/progress", KPIController.getKPIProgress);
+router.get("/progress/:user_id", KPIController.getKPIProgressByUserID);
 router.get("/:id", KPIController.getKPIById);
 
 // Create

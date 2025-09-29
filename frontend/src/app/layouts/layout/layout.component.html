@@ -67,15 +67,6 @@
           </span>
           <span class="font-medium">Manage KPI</span>
         </a>
-
-        <a
-          routerLink="/kpis/create"
-          routerLinkActive="bg-gray-100 text-indigo-600"
-          class="nav-item flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1"
-        >
-          <span class="text-lg mr-4">➕</span>
-          <span class="font-medium">Create KPI</span>
-        </a>
       </div>
 
       <!-- Management Section -->
@@ -201,10 +192,10 @@
         <div class="flex items-center space-x-4">
           <div class="flex-1">
             <div class="font-semibold text-gray-800 text-sm">
-              {{ "John Doe" }}
+              {{ this.userData?.username || "" }}
             </div>
             <div class="text-xs text-gray-500">
-              {{ "Manager" }}
+              {{ this.userData?.role || "" }}
             </div>
           </div>
           <div

@@ -27,6 +27,9 @@ export class DashboardComponent {
     this.getKPICountByOnTrack();
     this.getKPICountByAtRisk();
     this.getKPICountByOffTrack();
+    this.kpiService.getLast6MonthsProgress().subscribe((res) => {
+      console.log(res);
+    });
   }
 
   getKPICount() {

@@ -3,7 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Kpi } from '../../models/kpi';
-import { Observable } from 'rxjs';
+import { forkJoin, map, Observable, tap } from 'rxjs';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -43,5 +44,41 @@ export class KpiService {
 
   deleteKPI(id: number) {
     return this.http.delete(`${environment.apiUrl}/kpis/${id}`);
+  }
+  getLast6MonthsProgress(): Observable<
+    {
+      month: string;
+      progress: number;
+      actual_value: number;
+      target_value: number;
+    }[]
+  > {
+    const requests: Observable<any>[] = [];
+    const labels: string[] = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const date = moment().subtract(i, 'months');
+      const monthNum = date.month() + 1; // Month 1-12
+      labels.push(date.format('MMM YYYY'));
+
+      const params = new HttpParams()
+        .set('month', monthNum.toString())
+        .set('year', date.year().toString());
+
+      requests.push(
+        this.http.get(`${environment.apiUrl}/kpis/progress`, { params })
+      );
+    }
+
+    return forkJoin(requests).pipe(
+      map((responses: any[]) =>
+        responses.map((res, index) => ({
+          month: labels[index],
+          progress: Number(res.progressPercent) || 0,
+          actual_value: res.totalActual || 0,
+          target_value: res.totalTarget || 0,
+        }))
+      )
+    );
   }
 }

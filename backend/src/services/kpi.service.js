@@ -119,6 +119,66 @@ class KPIService {
     });
     return count;
   }
+
+  async getKPIProgress(where) {
+    const kpis = await KPI.findAll({
+      attributes: ["actual_value", "target_value"],
+      where,
+    });
+    if (!kpis.length) return 0; // no KPIs assigned
+
+    // Sum actual and target values
+    const totalActual = kpis.reduce(
+      (sum, kpi) => sum + parseFloat(kpi.actual_value),
+      0
+    );
+    const totalTarget = kpis.reduce(
+      (sum, kpi) => sum + parseFloat(kpi.target_value),
+      0
+    );
+
+    // Calculate % progress
+    const progress = totalTarget > 0 ? (totalActual / totalTarget) * 100 : 0;
+    return {
+      totalActual,
+      totalTarget,
+      progressPercent: progress.toFixed(2),
+    };
+  }
+
+  async getKPIProgressByUserID(user_id) {
+    try {
+      // Get all KPIs for the user
+      const kpis = await KPI.findAll({
+        where: { assigned_user: user_id },
+        attributes: ["actual_value", "target_value"],
+      });
+
+      if (!kpis.length) return 0; // no KPIs assigned
+
+      // Sum actual and target values
+      const totalActual = kpis.reduce(
+        (sum, kpi) => sum + parseFloat(kpi.actual_value),
+        0
+      );
+      const totalTarget = kpis.reduce(
+        (sum, kpi) => sum + parseFloat(kpi.target_value),
+        0
+      );
+
+      // Calculate % progress
+      const progress = totalTarget > 0 ? (totalActual / totalTarget) * 100 : 0;
+
+      return {
+        totalActual,
+        totalTarget,
+        progressPercent: progress.toFixed(2),
+      };
+    } catch (err) {
+      console.error("Error calculating KPI progress:", err);
+      return 0;
+    }
+  }
 }
 
 module.exports = new KPIService();

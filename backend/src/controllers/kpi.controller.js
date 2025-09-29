@@ -1,5 +1,5 @@
 const KPIService = require("../services/kpi.service");
-
+const { Op, literal, fn, col, where: seqWhere } = require("sequelize");
 class KPIController {
   async createKPI(req, res) {
     try {
@@ -106,6 +106,97 @@ class KPIController {
       return res.status(200).json(count);
     } catch (error) {
       res.status(500).json({ message: "Server error" });
+    }
+  }
+
+  // async getKPIProgress(req, res) {
+  //   try {
+  //     const { user_id, status, month, year } = req.query;
+  //     const where = {};
+
+  //     if (user_id) {
+  //       where.assigned_user = user_id;
+  //     }
+
+  //     if (status) {
+  //       where.status = status;
+  //     }
+
+  //     // Combine month & year filters on end_date
+  //     if (month || year) {
+  //       where.end_date = { [Op.and]: [] };
+
+  //       if (month) {
+  //         where.end_date[Op.and].push(
+  //           seqWhere(fn("MONTH", col("end_date")), month)
+  //         );
+  //       }
+
+  //       if (year) {
+  //         where.end_date[Op.and].push(
+  //           seqWhere(fn("YEAR", col("end_date")), year)
+  //         );
+  //       }
+  //     }
+
+  //     const progressData = await KPIService.getKPIProgress(where);
+
+  //     return res.json(progressData);
+  //   } catch (err) {
+  //     console.error("Error fetching KPI progress:", err);
+  //     return res.status(500).json({ message: "Internal server error" });
+  //   }
+  // }
+
+  async getKPIProgress(req, res) {
+    try {
+      const { user_id, status, month, year } = req.query;
+      const where = {};
+
+      if (user_id) {
+        where.assigned_user = user_id;
+      }
+
+      if (status) {
+        where.status = status;
+      }
+
+      // Month and year filter for PostgreSQL
+      const dateFilters = [];
+      if (month) {
+        dateFilters.push(`EXTRACT(MONTH FROM "end_date") = ${month}`);
+      }
+      if (year) {
+        dateFilters.push(`EXTRACT(YEAR FROM "end_date") = ${year}`);
+      }
+
+      if (dateFilters.length > 0) {
+        where[Op.and] = dateFilters.map((f) => literal(f));
+      }
+
+      const progressData = await KPIService.getKPIProgress(where);
+
+      return res.json(progressData);
+    } catch (err) {
+      console.error("Error fetching KPI progress:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async getKPIProgressByUserID(req, res) {
+    const user_id = parseInt(req.params.user_id, 10);
+
+    if (isNaN(user_id)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    try {
+      const progressData = await KPIService.getKPIProgressByUserID(user_id);
+
+      return res.json(progressData);
+    } catch (err) {
+      console.error("Error fetching KPI progress:", err);
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 }
