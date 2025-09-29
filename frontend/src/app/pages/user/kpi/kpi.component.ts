@@ -35,8 +35,6 @@ export class KpiComponent {
     this.userData = this.getUserFromStorage();
     if (this.userData && this.userData.id) {
       this.getKPIByUserID(this.userData.id);
-    } else {
-      console.warn('No user found in storage');
     }
   }
 
