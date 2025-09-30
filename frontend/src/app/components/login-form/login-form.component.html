@@ -66,7 +66,7 @@
             for="username"
             class="form-label block text-sm font-semibold text-gray-700 mb-2"
           >
-            Username
+            Email
           </label>
           <div class="relative">
             <div
@@ -94,14 +94,14 @@
               [(ngModel)]="username"
               required
               #usernameField="ngModel"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
             />
           </div>
           <span
             class="error-message text-red-500 text-sm mt-1 block"
             *ngIf="usernameField.invalid && usernameField.touched"
           >
-            Username is required
+            Email is required
           </span>
         </div>
 

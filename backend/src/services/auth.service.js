@@ -4,7 +4,7 @@ const { User, Role } = require("../models");
 const { Op } = require("sequelize");
 
 const JWT_SECRET = "isstechnology";
-const JWT_EXPIRES_IN = "7d";
+const JWT_EXPIRES_IN = "1d";
 
 class AuthService {
   async login(data) {
