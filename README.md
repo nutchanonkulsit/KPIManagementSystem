@@ -258,6 +258,7 @@ Request Body:
 ```
 Request Body:
 ```json
+{
     "title": "Increase Monthly",
     "description": "Track sales revenue to reach company targets.",
     "target_value": 150000.00,
@@ -266,6 +267,7 @@ Request Body:
     "assigned_user": 1,
     "start_date": "2025-10-01",
     "end_date": "2025-12-31"
+}
 ```
 #### Delete KPI
 ```
