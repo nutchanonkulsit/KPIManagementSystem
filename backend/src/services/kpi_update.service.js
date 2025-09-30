@@ -53,6 +53,29 @@ class KPIUpdateService {
     });
     return kpiUpdate;
   }
+
+  async deleteKPIUpdate(id) {
+    // 1. Find KPIUpdate
+    const kpiUpdate = await KPIUpdate.findOne({ where: { id } });
+    if (!kpiUpdate) {
+      throw new Error("KPIUpdate not found");
+    }
+
+    // 2. Subtract from KPI actual_value
+    await KPI.update(
+      {
+        actual_value: Sequelize.literal(
+          `actual_value - ${+kpiUpdate.updated_value}`
+        ),
+      },
+      { where: { id: kpiUpdate.kpi_id } }
+    );
+
+    // 3. Delete KPIUpdate
+    await KPIUpdate.destroy({ where: { id } });
+
+    return { message: "KPIUpdate deleted successfully" };
+  }
 }
 
 module.exports = new KPIUpdateService();

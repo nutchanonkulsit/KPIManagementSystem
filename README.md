@@ -89,30 +89,29 @@ ng serve
 docker build -t kpi-frontend .
 docker run -d -p 4200:80 kpi-frontend
 ```
-Then open http://localhost:4200/ 
+Open http://localhost:4200/ 
 
-If run `npm run db:seed` in backend success can login with
 
-#### ADMIN
 
-**email:** admin@example.com
+### Default Account
 
-**password:** admin123
+If run npm run db:seed in backend success can login with
 
-#### USER
-**email:** user@example.com
-
-**password:** user123
+| Role  | Email                                         | Password |
+| ----- | --------------------------------------------- | -------- |
+| Admin | [admin@example.com](mailto:admin@example.com) | admin123 |
+| User  | [user@example.com](mailto:user@example.com)   | user123  |
 
 ## API Documentation
 
 ### Authentication
+
 #### Sign up
-```POST
+```
 POST api/auth/signup
 ```
 
-**Request Body:**
+Request Body:
 ```json
 {
   "username": "exmaple",
@@ -123,11 +122,11 @@ POST api/auth/signup
 ```
 
 #### Login
-```POST
+```
 POST api/auth/login
 ```
 
-**Request Body:**
+Request Body:
 ```json
 {
   "email": "example@gmail.com",
@@ -152,7 +151,7 @@ POST api/auth/login
   PUT /api/users/:id
 ```
 
-**Request Body:**
+Request Body:
 ```json
 {
   "username": "example",
@@ -164,7 +163,138 @@ POST api/auth/login
 
 #### Delete user
 ```
-  DEL /api/users/:id
+  DELETE /api/users/:id
 ```
 
 ### Roles
+
+#### Get all roles
+```
+  GET /api/roles
+```
+
+#### Get role by ID
+```
+  GET /api/roles/:id
+```
+
+#### Create role
+```
+  POST /api/roles
+```
+Request Body:
+```json
+{
+  "name": "user" // Can create only user and admin
+}
+```
+
+#### DELETE role
+```
+  DELETE api/roles/:id
+```
+
+### KPIs
+
+#### Get all KPIs
+Params: user_id, status(On Track, At Risk, Off Track), order (ASC/DESC)
+```
+  GET api/kpis
+```
+
+#### Get KPI by ID
+```
+  GET api/kpis/:id
+```
+
+#### Get KPI by UserID
+Params: user_id
+```
+  GET api/kpis/user
+```
+
+#### Get KPI Length
+```
+  GET api/kpis/count
+```
+
+#### Get KPI Progress
+Params: user_id, status(On Track, At Risk, Off Track), month, year
+```
+  GET api/kpis/progress
+```
+
+#### Get KPI Progress with UserID
+```
+  GET api/kpis/progress/:id
+```
+
+#### Get KPI Length By status
+Params: status(On Track, At Risk, Off Track)
+```
+  GET api/kpis/count/status
+```
+
+#### Create KPI 
+```
+  POST api/kpis
+```
+Request Body:
+```json
+{
+    "title": "Increase Monthly Sales",
+    "description": "Track sales revenue to reach company targets.",
+    "target_value": 100000.00,
+    "actual_value": 25000.00,
+    "status": "On Track",
+    "assigned_user": 1,
+    "start_date": "2025-10-01",
+    "end_date": "2025-12-31"
+}
+```
+#### Update KPI
+```
+  PUT api/kpis/:id
+```
+Request Body:
+```json
+    "title": "Increase Monthly",
+    "description": "Track sales revenue to reach company targets.",
+    "target_value": 150000.00,
+    "actual_value": 50000.00,
+    "status": "On Track",
+    "assigned_user": 1,
+    "start_date": "2025-10-01",
+    "end_date": "2025-12-31"
+```
+#### Delete KPI
+```
+  DELETE api/kpis/:id
+```
+
+### KPI_Updates
+
+#### Get KPI_Update
+Params: kpi_id
+```
+  GET api/kpi_updates/kpi
+```
+
+#### Create KPI_Update
+```
+  POST api/kpi_updates
+```
+Request Body:
+```json
+{
+    "kpi_id": 1,
+    "updated_value" : 500.00,
+    "comment":"Update",
+    "updated_by": 1
+}
+```
+
+#### Delete KPI_Update
+```
+  DELETE api/kpi_updates/:id
+```

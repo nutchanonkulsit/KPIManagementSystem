@@ -14,8 +14,8 @@ class KPIUpdateController {
     try {
       const { kpi_id } = req.query;
       const where = {};
-      
-      if(kpi_id) {
+
+      if (kpi_id) {
         where.kpi_id = kpi_id;
       }
 
@@ -23,6 +23,16 @@ class KPIUpdateController {
       res.status(200).json(kpiUpdate);
     } catch (error) {
       res.status(400).json({ error: error.message });
+    }
+  }
+
+  async deleteKPIUpdate(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await KPIUpdateService.deleteKPIUpdate(id);
+      return res.status(200).json(result);
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
     }
   }
 }
