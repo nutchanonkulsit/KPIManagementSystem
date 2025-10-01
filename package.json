@@ -12,7 +12,7 @@
     "db:setup": "npm run migrate && npm run seed",
     "dev": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "docker:compose": "docker-compose up --build",
-    "docker:db": "docker-compose run backend sh -c 'npm run db:migrate && npm run seed'",
+    "docker:db": "docker-compose run backend sh -c 'npm run db:migrate:docker && npm run seed:docker'",
     "docker": "npm run docker:compose && npm run docker:db"
   },
   "devDependencies": {

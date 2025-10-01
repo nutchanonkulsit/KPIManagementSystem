@@ -13,7 +13,7 @@ services:
 
   backend:
     build: ./backend
-    container_name: node-kpi_management
+    container_name: Node
     ports:
       - "3000:3000"
     depends_on:
@@ -24,11 +24,11 @@ services:
       DB_PASSWORD: password
       DB_NAME: kpi_management
     # command: sh -c "npm run db:migrate && npm run seed && npm start"
-    command: sh -c "npm run db:migrate && npm start"
+    command: sh -c "npm run db:migrate:docker && npm run start:docker"
 
   frontend:
     build: ./frontend
-    container_name: angular-kpi_management
+    container_name: Angular
     ports:
       - "4200:80"
     depends_on:

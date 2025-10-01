@@ -5,13 +5,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/server.js",
-    "db:migrate": "npx sequelize-cli db:migrate --config src/config/config.json --migrations-path src/migrations",
-    "db:migrate:undo": "npx sequelize-cli db:migrate:undo --config src/config/config.json --migrations-path src/migrations",
-    "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all --config src/config/config.json --migrations-path src/migrations",
-    "migrate:create": "npx sequelize-cli migration:generate --config src/config/config.json --migrations-path src/migrations --name",
-    "seed": "npx sequelize-cli db:seed:all --config src/config/config.json --seeders-path src/seeders",
-    "seed:undo": "npx sequelize-cli db:seed:undo:all --config src/config/config.json --seeders-path src/seeders"
-
+    "db:migrate": "npx sequelize-cli db:migrate --config src/config/config.js --migrations-path src/migrations",
+    "db:migrate:undo": "npx sequelize-cli db:migrate:undo --config src/config/config.js --migrations-path src/migrations",
+    "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all --config src/config/config.js --migrations-path src/migrations",
+    "migrate:create": "npx sequelize-cli migration:generate --config src/config/config.js --migrations-path src/migrations --name",
+    "seed": "npx sequelize-cli db:seed:all --config src/config/config.js --seeders-path src/seeders",
+    "seed:undo": "npx sequelize-cli db:seed:undo:all --config src/config/config.js --seeders-path src/seeders",
+    "start:docker": "dotenv -e .env.docker -- npm run start",
+    "db:migrate:docker": "dotenv -e .env.docker -- npm run db:migrate",
+    "db:migrate:undo:docker": "dotenv -e .env.docker -- npm run db:migrate:undo",
+    "db:migrate:undo:all:docker": "dotenv -e .env.docker -- npm run db:migrate:undo:all",
+    "seed:docker": "dotenv -e .env.docker -- npm run seed"
   },
   "author": "",
   "license": "ISC",
@@ -28,5 +32,8 @@
     "nodemon": "^3.1.10",
     "pg": "^8.16.3",
     "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^10.0.0"
   }
 }
