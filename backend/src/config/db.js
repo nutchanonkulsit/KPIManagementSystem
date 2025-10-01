@@ -4,6 +4,7 @@ require("dotenv").config();
 const DATABASE_URL =
   process.env.DATABASE_URL ||
   "postgres://root:password@localhost:5432/kpi_management";
+  // "postgres://root:password@db:5432/kpi_management";
 
 const sequelize = new Sequelize(DATABASE_URL, {
   dialect: "postgres",
