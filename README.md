@@ -15,7 +15,17 @@
 - User: `root`  
 - Password: `password`  
 
-### Back End
+### Run the project
+```
+npm run dev
+```
+
+#### For docker
+```
+npm run docker
+```
+
+<!-- ### Back End
 ```
 cd backend/
 npm install
@@ -88,7 +98,7 @@ ng serve
 ```
 docker build -t kpi-frontend .
 docker run -d -p 4200:80 kpi-frontend
-```
+``` -->
 Open http://localhost:4200/ 
 
 
