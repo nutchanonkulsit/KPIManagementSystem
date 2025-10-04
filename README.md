@@ -16,13 +16,16 @@
 - Password: `password`  
 
 ### Run the project
+Need to have PostgreSQL start on port 5432 and run this command
 ```
+npm run db:setup
 npm run dev
 ```
 
 #### For docker
 ```
-npm run docker
+npm run docker:compose
+npm run docker:db
 ```
 
 <!-- ### Back End
